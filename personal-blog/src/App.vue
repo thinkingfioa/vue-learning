@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header style="text-align:center;">个人博客系统</el-header>
+      <el-header style="text-align:center;">
+        <span>个人博客系统</span>
+        <span style="float: right;">
+          <el-button type="primary" size="mini" icon="el-icon-edit">发布文章</el-button>
+          <el-button type="default" size="mini">登录</el-button>
+        </span>
+      </el-header>
       <el-main>
         <router-view/>
       </el-main>

@@ -25,6 +25,11 @@ export default new Router({
       path: '/edit',
       name: 'edit',
       component: () => import('../components/Edit.vue')
+    },
+    {
+      path: '/list',
+      name: 'list',
+      component: () => import('../components/List.vue')
     }
   ]
 })
