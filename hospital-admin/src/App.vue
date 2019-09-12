@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container class="h100">
-      <el-aside :width="'150px'" v-show="isShow" class="flex colu">
+      <el-aside :width="collapse?'auto':'200px'" class="flex colu">
         <div class="logo"></div>
         <el-menu
           default-active="/OnlineAudit"
@@ -9,14 +9,14 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
-          <el-menu-item index="/OnlineAudit">
+          <el-menu-item index="/onlineAudit">
             <i class="el-icon-finished"></i>
             <span slot="title">线上审核</span>
           </el-menu-item>
         </el-menu>
       </el-aside>
       <el-container>
-        <el-header class="header" v-show="isShow">
+        <el-header class="header">
           <span :class="[collapse?'el-icon-s-unfold':'el-icon-s-fold','lh60','cursor']" @click="collapse = !collapse"></span>
           <span>
             <el-dropdown @Command="handleCommand">
@@ -44,7 +44,6 @@ export default {
   name: 'App',
   data () {
     return {
-      isShow: true,
       collapse: false
     }
   },

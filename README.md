@@ -10,4 +10,8 @@
 - cnpm install
 - cnpm run dev 
 
+## 添加依赖
+-  npm install axios
+-  npm i emement-ui -S
+
 ## 项目介绍

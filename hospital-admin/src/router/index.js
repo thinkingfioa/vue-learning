@@ -5,10 +5,10 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'HelloWorld',
-    //   component: HelloWorld
-    // }
+    {
+      path: '/onlineAudit',
+      name: 'onlineAudit',
+      component: () => import('../views/admin/OnlineAudit.vue')
+    }
   ]
 })
