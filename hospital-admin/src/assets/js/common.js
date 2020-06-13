@@ -1,3 +1,5 @@
+const rows = 10
+
 function change (t) {
   if (t < 10) {
     return '0' + t
@@ -40,5 +42,6 @@ const status = {
 export default {
   timestampToTime,
   isFirst,
-  status
+  status,
+  rows
 }

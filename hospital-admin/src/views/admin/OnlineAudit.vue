@@ -159,8 +159,9 @@ export default {
         handleSizeChange (val) {
           this.selectRows = val
         },
-        onsubmit () {
-
+        onSubmit () {
+          this.currentPage = 1
+          this.getList({...this.formInline})
         },
         downExcel () {
 
@@ -179,16 +180,16 @@ export default {
           this.loading = true
           let data = {
             page: 1,
-            rows:that.selectRows?that.selectRows:that.$my.rows,
-            flag:'online',
+            rows: that.selectRows ? that.selectRows : that.$my.rows,
+            flag: 'online',
             ...val
           }
-          data.number = data.number?data.number.join(','):''
-          this.$axios.post(that.$my.api + '/bms/visit/getList', data,{headers:{token:JSON.parse(localStorage.getItem('userInfo')).token}}).then(res => {
-            if(res.data&&res.data.code === 200){
-              that.loading = false;
+          data.number = data.number ? data.number.join(',') : ''
+          this.$axios.post(that.$my.api + '/bms/visit/getList', data, {headers: {token: JSON.parse(localStorage.getItem('userInfo')).token}}).then(res => {
+            if (res.data && res.data.code === 200) {
+              that.loading = false
               that.tableData = res.data.data
-            }else{
+            } else {
               that.loading = false
               that.$message({
                 message: res.data.msg,
@@ -197,8 +198,6 @@ export default {
               })
               return false
             }
-          }).catch(function (error) {
-            that.loading = false
           })
         }
       }

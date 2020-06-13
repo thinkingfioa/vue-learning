@@ -3,7 +3,7 @@
 ## 安装必备工具
 - vue
 - npm
-- node
+- nodejs
 
 ## 创建一个vue项目
 - vue init webpack {project_name}。敲完命令后，全部缺省即可
