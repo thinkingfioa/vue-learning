@@ -25,7 +25,7 @@ Model ViewModel View
 ![](./pictures/2/数据驱动.png)
 
 #### 2.4.2 组件化
-![](./pictures/2/组件化.png)、
+![](./pictures/2/组件化.png)
 
 组件设计原则
 - 页面上每个独立的可视/可交互的区域视为一个组件
@@ -69,3 +69,23 @@ Vue-cli是Vue的脚手架工具。Vue-cli帮助搞定以下内容:
 #### 3.5 webpack打包
 webpack目前是前端最火的构建工具。视屏中基本讲述了webpack工作方式和很多帮忙理解的地方，这要涉及的目录是: build/config
 ![](./pictures/3/webpack.png)
+
+## 第四章 项目实战-准备工作
+### 4.1 需求分析
+- 商家页
+- 商品详情页
+
+### 4.2 素材
+素材存放在resource目录下
+
+### 4.3 图标字体文件的制作
+SVG是单一颜色的文件，放大伸缩不会变形，但通常不会直接使用，而是转成图标字体文件使用
+
+- 使用IcoMoon的工具，[主页地址](https://icomoon.io/)
+
+### 4.4 项目目录设计
+
+- main.js 是项目入口js文件
+- App.vue 整个Vue的大组件
+- components目录 存放组件文件。建议先建目录，然后创建vue文件，因为vue初了.vue文件外，还会包含一些相关图片等等，建议相关放在一个目录下
+- common主动创建的目录，存放公共模块和资源。一般包括三个子目录: js、styles和fonts
