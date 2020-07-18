@@ -4,6 +4,41 @@ const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const packageConfig = require('../package.json')
 
+var express = require('express')
+
+var appExpress = express()
+
+var appData = require('../data.json')
+const { default: router } = require('../src/router')
+var seller = appData.seller
+var goods = appData.goods
+var ratings = appData.ratings
+
+var apiRoutes = router()
+
+apiRoutes.get('/seller', function (req, res) {
+  res.json({
+    errno: 0,
+    data: seller
+  })
+})
+
+apiRoutes.get('/goods', function (req, res) {
+  res.json({
+    errno: 0,
+    data: goods
+  })
+})
+
+apiRoutes.get('/ratings', function (req, res) {
+  res.json({
+    errno: 0,
+    data: ratings
+  })
+})
+
+appExpress.use('/api', apiRoutes)
+
 exports.assetsPath = function (_path) {
   const assetsSubDirectory = process.env.NODE_ENV === 'production'
     ? config.build.assetsSubDirectory
