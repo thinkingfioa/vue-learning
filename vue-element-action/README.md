@@ -97,3 +97,38 @@ SVG是单一颜色的文件，放大伸缩不会变形，但通常不会直接�
 - seller : 商家相关的数据
 - goods : 商品相关的数据
 - ratings : 评论相关的数据
+
+本节视频内容稍有不兼容，可通过[网址](https://www.xiuyuan.info/?p=230)来完成
+
+## 第五章 项目实战-页面骨架开发
+
+### 5.1 组件拆分（上）
+- main.js是项目入口JS
+- /* eslint-disable no-new */，不是注释，为了屏蔽下面一个new 关键字无需赋值
+
+### 5.2 组件拆分（中）
+
+#### 5.2.1 引入其他的vue
+- 第一步：创建vue，如header.vue
+- 第二步：标签script标签中添加export default {}
+- 第三步：在待加的vue文件中script标签中import，并export default {}
+- 第四步：在待加的vue文件中template标签中使用
+
+### 5.3 组件拆分（下）
+
+#### 5.3.1 安装依赖
+- 安装依赖包，如stylus-loader，先在package.json中加入，然后调用cnpm install安装
+- 查看node_modules目录下是否安装成功，即可
+
+#### 5.3.2 所有内部依赖组件命名
+引入其他的vue组件时
+
+#### 5.3.3 Flex布局
+- 在写页面三等分：商品、评价、商家，用到移动端经典Flex布局，Flex 布局成为布局的首选方案。可参考文档[Flex 布局教程：语法篇](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
+- 写样式时，建议依样式层级依次写
+- 属性是id，用‘#’; 属性是class，用'.'
+
+### 5.4 Vue-router（上）
+- vue-router建议使用npm安装
+- 使用参考[官方文档](https://router.vuejs.org/zh/guide/#html)
+- router-view用于当路由地址变化时，将刷新该模块
