@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-header></v-header>
+    <v-header :seller="seller"></v-header>
     <div class="tab border-1px">
       <div class="tab-item">
         <router-link to="/goods">商品</router-link>
@@ -19,10 +19,30 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 import header from '@/components/header/header.vue'
 
+const ERR_OK = 0
+
 export default {
+  data () {
+    return {
+      // 定义数据的属性
+      seller: {}
+    }
+  },
+  // create在Vue创建时调用
+  created () {
+    // 使用vue-resource发起前后端请求
+    this.$http.get('/api/seller').then(response => {
+      response = response.body
+      if (response.errno === ERR_OK) {
+        this.seller = response.data
+      }
+    }, response => {
+      // error callback
+    })
+  },
   components: {
     'v-header': header
   }

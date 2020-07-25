@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
+import VueResource from 'vue-resource'
 import Goods from '@/components/goods/goods'
 import Ratings from '@/components/ratings/ratings'
 import Seller from '@/components/seller/seller'
@@ -12,6 +13,7 @@ import '@/common/styles/index.styl'
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
+Vue.use(VueResource)
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push (location) {

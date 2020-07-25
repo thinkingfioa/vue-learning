@@ -172,3 +172,52 @@ SVG是单一颜色的文件，放大伸缩不会变形，但通常不会直接�
 - 再在tab标签下定义一个自动缩放的border-1px，其border-1px能根据不同
 - 创建base.styl下编写自动缩放的border-1px
 - 创建index.styl样式，将目录common/styles下的所有以styl结尾的包含进去
+
+## 第六章 项目实战-header组件开发
+
+### 6.1 Vue-resource应用（上)
+Vue-resource主要用于处理前后端数据交互
+
+- header组件主要是商家的一些数据。在App.vue中定义返回的数据，并通过vue-resource安装
+
+#### 6.1.1 安装vue-resource
+- 在package.json中配置vue-resource，并在github上查看下版本
+- 调用npm install安装
+
+#### 6.1.2 使用vue-resource
+- 在main.js中导入vue-resource插件： import VueResource from 'vue-resource'
+- 注册vue-resource：Vue.use(VueResource)
+
+### 6.2 Vue-resource应用（下)
+vue-resource在main.js中注册后，就可以使用了
+
+#### 6.2.1 Vue组件的生命周期
+- 在data()方法中定义seller属性，再通过vue-resource将其赋值
+- 每个Vue组件都有其生命周期。每个Vue创建时，会调用created()方法，我们将基本数据的Get请求可以放到这个方法中
+- 查看vue-resource的[官方地址](https://github.com/pagekit/vue-resource)使用方法使用
+- 获取的response是一个属性，需要调用response = response.body转成Object对象
+- this关键字就是Vue自己。由于Vue是单页面，所以就是其本身
+- 可以通过console.log控制台输出看是否正确
+
+### 6.3 外部组件（1）开发header组件
+将vue-resource获取到的seller数据传递给header组件，使用v-bind（v-bind可以缩写为:)
+
+- 在header.vue中，通过props属性获取传递过来的seller
+
+#### 6.3.1 介绍布局
+header.vue上下分为两个布局：内容区、公告区。内容区又分为：头像区和内容区
+
+- 展示头像时，需要v-bind，也就是:src才可以。因为seller.avatar一开始是不存在的，需要通过异步请求绑定到具体，所以需要使用v-bind
+
+#### 6.3.2 编写布局
+- 其中如果数据可能不存在，需要使用v-if来判断。因为seller数据一开始是什么都没有，后来通过create()方法获取到后，再更新的
+
+#### 6.3.3 编写样式
+- 1. 字体都是白色的
+- 2. 内容区上下左右内边距使用padding来写。padding: 24px 12px 18px 24 px
+- 3. 头像和内容是一排，使用display: inline-block让其排在一行上
+
+### 6.4 外部组件（1）开发header组件
+- 发现头像和内容部分中间有缝隙，因为两个之间有空白字符，使用font-size:0去除之间的缝隙
+- 设置子元素这是font-size:14px
+- 设置内容区域的外边距margin-left
