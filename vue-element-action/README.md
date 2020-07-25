@@ -132,3 +132,43 @@ SVG是单一颜色的文件，放大伸缩不会变形，但通常不会直接�
 - vue-router建议使用npm安装
 - 使用参考[官方文档](https://router.vuejs.org/zh/guide/#html)
 - router-view用于当路由地址变化时，将刷新该模块
+
+### 5.5 Vue-router (下)
+- 建议import 导入使用'@'来描述路径，其中'@'在build/webpack.base.conf.js中定义的alias中描述
+
+#### 5.5.1 Vue-router默认展示
+- 进入首页，未展示出第一个页面，使用router.push('/goods')，告知默认展示
+- 添加css样式。 & 表示其父元素，即tab-view的样式
+- display:block是让元素为一个整体
+- text-decoration: none; 去掉字体的下划线，将将其加入static/css/reset.css中整体有效
+
+#### 5.5.2 CSS 书写规范
+- 1. 布局样式先写，如display
+- 2. 宽高，一些触发页面重绘的一些不可继承的随后写，如width、height
+- 3. 最后设置些字体颜色一些可被继承的写在最后，如font-size、color
+
+#### 5.5.3 点选中后，样式高亮
+- vue-router在具体某个后，绘默认填充router-link-active。我们可以在创建VueRouter是重新命名为active
+- 然后&.active 定义为 color: rgb(240, 20, 20)
+
+### 5.6 像素border实现
+
+#### 5.6.1 PC端使用border-bottom
+- border-bottom是设置下边框，通过配置css：border-bottom : 1px solid rgba(7, 27, 17, 0.1)
+- 手机端这种不行，因为会缩放
+
+#### 5.6.2 手机端看样式
+- 访问路径换成具体IP，不要使用localhost
+- 页面上通过草料二维码生成具体的访问二维码
+- 电脑和手机使用同个网络
+- 微信扫码，手机端查看样式
+
+查看后，会发现像素比较粗，并不是正在意义上的1px，不推荐手机端使用border-bottom来设置样式，
+
+#### 5.6.3 正确设置手机端的下边栏框，实现1px
+- 定义一个mixin.styl的文件，本质上就是一个css
+- 在mixin.styl中定义css方法，并在需要的地方使用。这样可以后期复用相同的CSS样式
+- 使用':after'定义尾类样式，after告知其在某个元素尾部修饰。
+- 再在tab标签下定义一个自动缩放的border-1px，其border-1px能根据不同
+- 创建base.styl下编写自动缩放的border-1px
+- 创建index.styl样式，将目录common/styles下的所有以styl结尾的包含进去
