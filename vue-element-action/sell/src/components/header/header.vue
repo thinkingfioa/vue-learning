@@ -55,9 +55,29 @@ export default {
                 margin: 2px 0 8px 0
                 .brand
                     display: inline-block
+                    vertical-align: top
                     width: 30px
                     height: 18px
                     bg-image('brand')
                     background-size: 30px 18px
+                    background-repeat: no-repeat
+                .name
+                    display: inline-block
+                    margin-left: 6px
+                    front-size: 16px
+                    line-height: 18px
+                    font-weight: bold
+            .description
+                display: inline-block
+                margin: 0 12px 10px 0
+                font-size: 12px
+                font-weight: 200
+                line-height: 12px
+            .support
+                .icon
+                    display: inline-block
+                    width: 20px
+                    height: 10px
+                    bg-image('decrease_1')
                     background-repeat: no-repeat
 </style>

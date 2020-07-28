@@ -217,17 +217,15 @@ header.vue上下分为两个布局：内容区、公告区。内容区又分为�
 - 2. 内容区上下左右内边距使用padding来写。padding: 24px 12px 18px 24 px
 - 3. 头像和内容是一排，使用display: inline-block让其排在一行上
 
-### 6.4 外部组件（1）开发header组件
+### 6.4 外部组件（2）开发header组件
 - 发现头像和内容部分中间有缝隙，因为两个之间有空白字符，使用font-size:0去除之间的缝隙
 - 设置子元素这是font-size:14px
 - 设置内容区域的外边距margin-left
-
-### 6.5 外部组件（2）开发header组件
 - span标签需要加上width和height设置宽高，同时加上display: inline-block。因为span是需要内容撑开的，没有内容是不行的
 - 背景图片有2x和3x，需要写一个共用方法，可以在mixin.styl中定义一个函数bg-image
 
-#### 6.5.1 设置一个图片的样式
-- template中使用<span class="brand"/>占位住
+#### 6.4.1 设置一个title的样式
+- template中使用<span class="brand"/>占位
 - 编写css
 
 ```css
@@ -239,3 +237,6 @@ header.vue上下分为两个布局：内容区、公告区。内容区又分为�
     background-size: 30px 18px
     background-repeat: no-repeat
 ```
+
+### 6.5 外部组件（3）开发header组件
+- vertical-align: top，将brand和name行内对其
