@@ -318,4 +318,18 @@ background-repeat: no-repeat
 第一步：父元素添加 position: relative
 第二步：子元素添加 position: absolute
 
-### 6.8 外部组件（6） 
+### 6.8 外部组件（6）换上图片背景
+背景图片需要模糊处理。思路：将图片设置成绝对位置，然后宽高撑满head区域，同时设置z-index=-1设置成底层
+
+设置元素filter: blur(10px)，达到模糊效果
+
+```
+position absolute
+top 0
+left 0
+width 100%
+height 100%
+z-index -1
+filter blur(10px)
+```
+
