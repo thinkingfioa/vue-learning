@@ -333,3 +333,38 @@ z-index -1
 filter blur(10px)
 ```
 
+### 6.9 详情弹层页（1）-实现弹出层
+观察浮层，由于底部有关闭'X'按钮，不可用Flex布局，改为使用CSS Sticky footers布局。
+
+浮层通过position: fixed绝对定位屏幕；使用z-index: 100置于屏幕顶层；使用overflow: auto来显示滚动条；top: 0和left: 0位于顶部显示
+
+#### 6.9.1 详情弹层页（1）- 控制弹出层显示
+使用v-show和属性来控制，默认v-show="detailShow"。添加一个data()方法，data()方法有返回值，返回值中定义detailShow=false
+
+#### 6.9.2 详情弹层页（1）- 控制弹出层显示
+定义一个方法，绑定到@click事件中，放到method()方法下，改变detailShow=true
+
+#### 6.9.3 总结
+- data()是方法，通过return返回需要定义的数据，返回的数据是一个json格式的
+- method是this的属性，我们在这个属性定以方法，方法改变data中的数据，达到显示、关闭效果
+
+### 6.10 详情弹层页（1）-实现弹出层，使用Sticky footers
+sticky footers用于解决：当页面不够长时，有块区域定在视窗的底部；当页面内容比较长，页脚块会被内容向下推送。[参考](https://www.w3cplus.com/css3/css-secrets/sticky-footers.html)
+如果是flex则会一直在底部
+
+#### 6.10.1 sticky footers
+使用一个兼容性最好，较复杂的方法。有一定的套路。主要分为两个层，一层是wrapper，一层是底部层。wrapper需要设置自动清除浮动clearfix。
+
+clearfix是为了清除浮动，避免撑开，我们更将其加入到通用base.styl中。html页面主要分为下面三个部分
+
+```html
+<div v-show="detailShow" class="detail">
+  <div class="detail-wrapper clearfix">
+    <div class="detail-main"></div>
+  </div>
+  <div class="detail-close">
+    <i class="icon-close"></i>
+  </div>
+</div>
+```
+
