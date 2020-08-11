@@ -348,7 +348,7 @@ filter blur(10px)
 - data()是方法，通过return返回需要定义的数据，返回的数据是一个json格式的
 - method是this的属性，我们在这个属性定以方法，方法改变data中的数据，达到显示、关闭效果
 
-### 6.10 详情弹层页（1）-实现弹出层，使用Sticky footers
+### 6.10 详情弹层页（2）-实现弹出层，使用Sticky footers
 sticky footers用于解决：当页面不够长时，有块区域定在视窗的底部；当页面内容比较长，页脚块会被内容向下推送。[参考](https://www.w3cplus.com/css3/css-secrets/sticky-footers.html)
 如果是flex则会一直在底部
 
@@ -368,3 +368,12 @@ clearfix是为了清除浮动，避免撑开，我们更将其加入到通用bas
 </div>
 ```
 
+### 6.11 详情弹层页（3）- 标题布局Star
+
+#### 6.11.1 设计star星星组件
+star星星组件在其他地方也用，我们将其抽成star.vue，放在common中。允许接入两个参数: size, score；
+
+利用vue框架提供的计算属性computed，来制定class="starType"具体样式。 &.表示与父亲同级别属性。我们定义出所有的CSS格式，然后通过方法，根据输入的参数，选择具体展示样式
+
+### 6.12 详情弹层页（3）- 标题布局Star
+&:last-child - 表示最后一个循环体节点
