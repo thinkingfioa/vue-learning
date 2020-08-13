@@ -375,5 +375,26 @@ star星星组件在其他地方也用，我们将其抽成star.vue，放在commo
 
 利用vue框架提供的计算属性computed，来制定class="starType"具体样式。 &.表示与父亲同级别属性。我们定义出所有的CSS格式，然后通过方法，根据输入的参数，选择具体展示样式
 
+computed是vue提供的计算属性，实时响应的，比如data里的值随时变化作出一些处理，就用computed
+
 ### 6.12 详情弹层页（3）- 标题布局Star
-&:last-child - 表示最后一个循环体节点
+&:last-child - 表示最后一个循环体节点，一般对于循环体非常通用
+
+### 6.13 详情弹层页（4）- 将star.vue引入到header.vue中
+- 在标签<script>中调用导入import
+- 在组件属性中components，声明star
+- 通过':size="48" :score="seller.score"'传进入star.vue中
+
+通常我们会使用wrapper包装下组件，再通过定义wrapper的样式，达到灵活性
+
+- text-align 是剧中显示，不仅仅是文本
+
+### 6.13 详情弹层页（5）- 自适应的flex布局
+flex是Flexible Box的缩写，意为"弹性布局"
+
+flex布局可参考[Flex布局教程](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
+
+- flex: 1表示自动缩放
+- 如果希望一个元素上下居中，通过通过设置 position: relative && top
+- 画一条线：border-bottom 1px solid rgba(255, 255, 255, 0.2)
+
