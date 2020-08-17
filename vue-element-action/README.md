@@ -389,7 +389,7 @@ computed是vue提供的计算属性，实时响应的，比如data里的值随�
 
 - text-align 是剧中显示，不仅仅是文本
 
-### 6.13 详情弹层页（5）- 自适应的flex布局
+### 6.14 详情弹层页（5）- 自适应的flex布局
 flex是Flexible Box的缩写，意为"弹性布局"
 
 flex布局可参考[Flex布局教程](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
@@ -398,3 +398,4 @@ flex布局可参考[Flex布局教程](http://www.ruanyifeng.com/blog/2015/07/fle
 - 如果希望一个元素上下居中，通过通过设置 position: relative && top
 - 画一条线：border-bottom 1px solid rgba(255, 255, 255, 0.2)
 
+### 6.15 详情弹层页（5）- 自适应的flex布局
