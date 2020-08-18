@@ -398,4 +398,11 @@ flex布局可参考[Flex布局教程](http://www.ruanyifeng.com/blog/2015/07/fle
 - 如果希望一个元素上下居中，通过通过设置 position: relative && top
 - 画一条线：border-bottom 1px solid rgba(255, 255, 255, 0.2)
 
-### 6.15 详情弹层页（5）- 自适应的flex布局
+### 6.15 详情弹层页（6）
+布局不复杂，使用v-for遍历各个support
+
+### 6.16 详情弹层页（7）- 'X'按钮点击关闭
+给底部'X'添加一个@click事件方法，在方法中修改属性detailShow=false
+
+给详情页添加动画，使用Vue添加动画非常简单。可使用固定套路
+
