@@ -431,3 +431,22 @@ display flex
 
 1. 使用vue-resource调用http的接口，在created()方法中添加，将获取的goods
 2. 在data()方法中定义goods属性
+
+### 7.2 左侧menu布局
+
+- 左侧是列表，使用标签ul。
+- 由于左侧列表中有些有图片，有些则不显示图片。使用v-show="item.type > 0"，来控制是否显示
+- 所有的样式建议全部用class，不要用标签，否则可能导致性能问题
+- 如果希望元素垂直居中，可以使用display table
+
+#### 7.2.1 左侧menu垂直居中
+使用标签display table和子元素display table-cell
+
+```$xslt
+.menu-item
+    display table
+    .text
+        display table-cell
+        vertical-align middle
+```
+
