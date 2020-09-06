@@ -460,3 +460,8 @@ display flex
 
 #### 7.4.1 margin和padding区别
 一个形象的比喻是，padding是填充物，如买首饰，加入的很多填充物。margin则是周围的空气，可重叠
+
+### 7.5 右侧食品列表布局(2)
+如果两个class的样式存在共性，可以使用并排写，比如.desc, .extra，然后在下面分别写.desc和.extra的特殊样式
+
+字体上有删除线，可使用属性text-decoration line-through来描述
