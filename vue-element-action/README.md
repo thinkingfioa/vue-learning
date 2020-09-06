@@ -465,3 +465,33 @@ display flex
 如果两个class的样式存在共性，可以使用并排写，比如.desc, .extra，然后在下面分别写.desc和.extra的特殊样式
 
 字体上有删除线，可使用属性text-decoration line-through来描述
+
+## 第八章 项目实战-商品详情页
+商品详情页是通常是一个隐藏的。所以在data()方法中定义变量showFlag，缺省将其隐藏
+
+### 8.1 商品详情页实现(1)
+
+商品详情页是由商品页传入，在props中定义属性food，传入传入参数
+
+商品详情页是一个相对于浏览器窗口是固定位置，使用position fixed
+
+```
+position fixed
+z-index 30
+top 0
+left 0
+width 100%
+```
+
+通常对于一个弹出的页面，都是一个绝对定位的布局，如果是有父亲存在，使用position:absolute
+
+#### 8.1.1 使用导入的组件顺序.
+比如，目前goods.vue点击了单个good，需要显示商品的详情页面，我们需要传参数，并引入good.vue
+
+1. 编写<food>标签，使用:food=selectdFood来传参
+2. 在data方法中selectdFood缺省变量
+3. 在需要点击的地方添加@click="selectFood(food, $event)"方法，实现调用
+4. 在methods属性中添加方法selectFood(food, $event)，该方法主要的目的就是将选中的food，赋值给data()中selectdFood
+5. 导入food.vue，如: import food from '@/components/food/food'
+6. 在components属性中定义food
+

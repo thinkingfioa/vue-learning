@@ -15,7 +15,7 @@
         <li v-for="item in goods" :key="item.index" class="foods-list">
           <h1 class="title">{{item.name}}</h1>
           <ul>
-            <li v-for="food in item.foods" :key="food.index" class="food-item">
+            <li @click="selectFood(food, $event)" v-for="food in item.foods" :key="food.index" class="food-item">
               <div class="icon">
                 <img :src="food.icon" width="57px" height="57px">
               </div>
@@ -36,10 +36,13 @@
         </li>
       </ul>
     </div>
+    <food :food="selectdFood"></food>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+
+import food from '@/components/food/food'
 
 const ERR_OK = 0
 
@@ -51,7 +54,8 @@ export default {
   },
   data () {
     return {
-      goods: []
+      goods: [],
+      selectdFood: {}
     }
   },
   created () {
@@ -64,6 +68,17 @@ export default {
     }, response => {
       // error callback
     })
+  },
+  methods: {
+    selectFood (food, event) {
+      if (!event._constructed) {
+        return
+      }
+      this.selectdFood = food
+    }
+  },
+  components: {
+    food
   }
 }
 </script>
