@@ -466,6 +466,17 @@ display flex
 
 字体上有删除线，可使用属性text-decoration line-through来描述
 
+### 7.6 better-scroll运用(1)
+
+- 在package.json中添加better-scroll的依赖
+- 调用cnpm install
+- 查看node_modules中是否已经安装better-scroll成功
+
+#### 7.6.1 $refs 的使用是vue 2 操作dom的一种方式
+ref被用来给元素或子组件注册引用信息。引用信息将会注册在父组件的$refs对象上。
+
+vue数据的修改，DOM也会跟着做映射，但Vue更新DOM是异步的，用$nextTick()回调函数中确保DOM变化后能调用_initScroll()方法
+
 ## 第八章 项目实战-商品详情页
 商品详情页是通常是一个隐藏的。所以在data()方法中定义变量showFlag，缺省将其隐藏
 
