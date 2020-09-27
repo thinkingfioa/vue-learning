@@ -10,7 +10,7 @@
         </li>
       </ul>
     </div>
-    <div class="foods-wrapper" ref="foodWrapper">
+    <div class="foods-wrapper" ref="foodsWrapper">
       <ul>
         <li v-for="item in goods" :key="item.index" class="foods-list">
           <h1 class="title">{{item.name}}</h1>
@@ -75,8 +75,26 @@ export default {
   },
   methods: {
     _initScroll () {
-      this.menuScroll = new BScroll(this.$refs.menuWrapper, {})
-      this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {})
+      if (!this.menuScroll) {
+        this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+          click: true,
+          mouseWheel: true,
+          disableMouse: false,
+          disableTouch: false
+        })
+      } else {
+        this.menuScroll.refresh()
+      }
+      if (!this.foodsScroll) {
+        this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+          click: true,
+          mouseWheel: true,
+          disableMouse: false,
+          disableTouch: false
+        })
+      } else {
+        this.foodsScroll.refresh()
+      }
     },
     selectFood (food, event) {
       if (!event._constructed) {
@@ -137,53 +155,52 @@ export default {
           font-size 12px
     .foods-wrapper
       flex 1
-      .foods-list
-        .title
-          padding-left 14px
-          line-height 26px
-          height 26px
-          background #f3f5f7
-          border-left 2px solid #d9dde1
-          font-size 12px
-          color rgb(147, 153, 159)
-        .food-item
-          display flex
-          margin 18px
-          padding-bottom 18px
-          border-1px(rgba(7, 17, 27, 0.1))
-          &:last-child
-            border-none()
-            margin-bottom 0px
-          .icon
-            flex 0 0 57px
-            margin-left 10px
-          .content
-            flex 1
-            margin-left 18px
-            .name
-              margin-top 2px
+      .title
+        padding-left 14px
+        line-height 26px
+        height 26px
+        background #f3f5f7
+        border-left 2px solid #d9dde1
+        font-size 12px
+        color rgb(147, 153, 159)
+      .food-item
+        display flex
+        margin 18px
+        padding-bottom 18px
+        border-1px(rgba(7, 17, 27, 0.1))
+        &:last-child
+          border-none()
+          margin-bottom 0px
+        .icon
+          flex 0 0 57px
+          margin-left 10px
+        .content
+          flex 1
+          margin-left 18px
+          .name
+            margin-top 2px
+            font-size 14px
+            color rgb(7, 17, 27)
+            line-height 14px
+            height 14px
+          .desc, .extra
+            margin-top 8px
+            font-size 10px
+            color rgb(147, 153, 159)
+            line-height 10px
+          .extra
+            .sellCount
+              margin-right 12px
+          .price
+            margin-top 8px
+            font-weight 700
+            line-height 24px
+            .now
+              margin-right 8px
               font-size 14px
-              color rgb(7, 17, 27)
-              line-height 14px
-              height 14px
-            .desc, .extra
-              margin-top 8px
+              color rgb(240, 20, 20)
+            .old
+              text-decoration line-through
               font-size 10px
               color rgb(147, 153, 159)
-              line-height 10px
-            .extra
-              .sellCount
-                margin-right 12px
-            .price
-              margin-top 8px
-              font-weight 700
-              line-height 24px
-              .now
-                margin-right 8px
-                font-size 14px
-                color rgb(240, 20, 20)
-              .old
-                text-decoration line-through
-                font-size 10px
-                color rgb(147, 153, 159)
 </style>
