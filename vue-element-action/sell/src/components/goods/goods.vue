@@ -2,7 +2,7 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
-        <li v-for="item in goods" :key="item.index" class="menu-item">
+        <li v-for="item in goods" :key="item.index" class="menu-item" :class="">
           <span class="text border-1px">
             <span v-show="item.type > 0" class="icon" :class="classMap[item.type]"></span>
             {{item.name}}
@@ -12,7 +12,7 @@
     </div>
     <div class="foods-wrapper" ref="foodsWrapper">
       <ul>
-        <li v-for="item in goods" :key="item.index" class="foods-list">
+        <li v-for="item in goods" :key="item.index" class="foods-list food-list-hook">
           <h1 class="title">{{item.name}}</h1>
           <ul>
             <li @click="selectFood(food, $event)" v-for="food in item.foods" :key="food.index" class="food-item">
@@ -23,12 +23,10 @@
                 <h2 class="name">{{food.name}}</h2>
                 <p class="desc">{{food.description}}</p>
                 <div class="extra">
-                  <span class="sellCount">月售{{food.sellCount}}份</span>
-                  <span class="rating">好评率{{food.rating}}%</span>
+                  <span class="sellCount">月售{{food.sellCount}}份</span><span class="rating">好评率{{food.rating}}%</span>
                 </div>
                 <div class="price">
-                  <span class="now">¥{{food.price}}</span>
-                  <span v-show="food.oldPrice" class="old">¥{{food.oldPrice}}</span>
+                  <span class="now">¥{{food.price}}</span><span v-show="food.oldPrice" class="old">¥{{food.oldPrice}}</span>
                 </div>
               </div>
             </li>
@@ -56,7 +54,21 @@ export default {
   data () {
     return {
       goods: [],
+      listHeight: [],
+      scrollY: 0,
       selectdFood: {}
+    }
+  },
+  computed: {
+    currentIndex () {
+      for (let i = 0; i < this.listHeight.length; i++) {
+        let height1 = this.listHeight[i]
+        let height2 = this.listHeight[i + 1]
+        if (!height2 || (this.scrollY > height1 && this.scrollY < height2)) {
+          return i
+        }
+      }
+      return 0
     }
   },
   created () {
@@ -67,6 +79,7 @@ export default {
         this.goods = response.data
         this.$nextTick(() => {
           this._initScroll()
+          this._calculateHeight()
         })
       }
     }, response => {
@@ -77,23 +90,32 @@ export default {
     _initScroll () {
       if (!this.menuScroll) {
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {
-          click: true,
-          mouseWheel: true,
-          disableMouse: false,
-          disableTouch: false
+          mouseWheel: true
         })
       } else {
         this.menuScroll.refresh()
       }
       if (!this.foodsScroll) {
         this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
-          click: true,
-          mouseWheel: true,
-          disableMouse: false,
-          disableTouch: false
+          probeType: 3,
+          mouseWheel: true
         })
       } else {
         this.foodsScroll.refresh()
+      }
+      this.foodsScroll.on('scroll', (pos) => {
+        this.scrollY = Math.abs(Math.round(pos.y))
+      })
+    },
+    _calculateHeight () {
+      let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook')
+      let height = 0
+      this.listHeight.push(height)
+      for (let i = 0; i < foodList.length; i++) {
+        let item = foodList[i]
+        // clientHeight 是单个元素的高度
+        height += item.clientHeight
+        this.listHeight.push(height)
       }
     },
     selectFood (food, event) {
@@ -188,6 +210,8 @@ export default {
             font-size 10px
             color rgb(147, 153, 159)
             line-height 10px
+          .desc
+            line-height 12px
           .extra
             .sellCount
               margin-right 12px

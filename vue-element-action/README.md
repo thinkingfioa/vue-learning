@@ -472,15 +472,32 @@ display flex
 - 调用cnpm install
 - 查看node_modules中是否已经安装better-scroll成功
 
-#### 7.6.1 $refs 的使用是vue 2 操作dom的一种方式
+#### 7.6.1 $refs 的使用是vue2.0 操作dom的一种方式
 ref被用来给元素或子组件注册引用信息。引用信息将会注册在父组件的$refs对象上。
 
 vue数据的修改，DOM也会跟着做映射，但Vue更新DOM是异步的，用$nextTick()回调函数中确保DOM变化后能调用_initScroll()方法
 
+特别提醒: better-scroll中在2.0.4版本中，要加上mouseWheel=true属性，否则不能滑动
 
+### 7.7 better-scroll运用(2)
+使用better-scroll实现左边的menu菜单和右边的商品菜单联动。昨天点击某个菜单，后边可以直接跳转到固定商品地方；右边滑动商品，左边的菜单栏页动。
 
+#### 7.7.1 记录右边商品中每个地方的高度
+计算出右边某个菜单下所有商品的高度，建立一个数组，通过计算鼠标Y坐标，得到数组的下标。然后在利用Vue的class绑定，把左边的菜单栏高亮表示出来。
 
+第一步：获取DOM的高度，需要获取的是每个菜单的高低，所以定义一个class="foods-list-hook"。通常如果定义某个样式，如果是用于js获取的，喜欢加上hook字符串标记。
 
+第二步：在data()方法中定一个listHeight[]数组，遍历每个food-list-hood，获取到单个元素的clientHeight，添加到listHeight[]数组中。
+
+第三步：需要实时计算出滑动的纵坐标。在data()方法中，定义一个scrollY变量，通过better-scroll中传入参数probeType: 3，告知better-scroll实时获取到纵坐标。通过编写代码，获取变量值
+```$xslt
+this.foodsScroll.on('scroll', (pos) => {
+    this.scrollY = Math.abs(Math.round(pos.y))
+})
+```
+
+第四步：将scrollY与左侧的索引做映射。利用Vue提供的计算属性computed实现，定义一个currentIndex()，遍历listHeight数组，得到scrollY所在的下标值。Vue的计算属性会跟着scrollY重新计算
+Vue的计算属性computed依赖于它的data属性，只要依赖的data属性发生了变化，就自定义调用计算属性执行一次。区别于watch，在Vue中多使用computed替代watch
 
 
 
