@@ -480,7 +480,7 @@ vue数据的修改，DOM也会跟着做映射，但Vue更新DOM是异步的，�
 特别提醒: better-scroll中在2.0.4版本中，要加上mouseWheel=true属性，否则不能滑动
 
 ### 7.7 better-scroll运用(2)
-使用better-scroll实现左边的menu菜单和右边的商品菜单联动。昨天点击某个菜单，后边可以直接跳转到固定商品地方；右边滑动商品，左边的菜单栏页动。
+使用better-scroll实现左边的menu菜单和右边的商品菜单联动。左边点击某个菜单，右边可以直接跳转到固定商品地方；右边滑动商品，左边的菜单栏页联动。
 
 #### 7.7.1 记录右边商品中每个地方的高度
 计算出右边某个菜单下所有商品的高度，建立一个数组，通过计算鼠标Y坐标，得到数组的下标。然后在利用Vue的class绑定，把左边的菜单栏高亮表示出来。
@@ -499,7 +499,22 @@ this.foodsScroll.on('scroll', (pos) => {
 第四步：将scrollY与左侧的索引做映射。利用Vue提供的计算属性computed实现，定义一个currentIndex()，遍历listHeight数组，得到scrollY所在的下标值。Vue的计算属性会跟着scrollY重新计算
 Vue的计算属性computed依赖于它的data属性，只要依赖的data属性发生了变化，就自定义调用计算属性执行一次。区别于watch，在Vue中多使用computed替代watch
 
+注：Vue提供的计算属性computed可定义一些函数，只要data中的数据发生了变化computed会同步改变，使用计算属性时不要加上()，应该当作普通属性使用
 
+### 7.8 better-scroll运用(3)
+
+#### 7.8.1 滑动商品，高亮左边的菜单栏
+定义class，实现左边菜单滑动，右边跟着滑动效果。判断当前的index与计算出来的currentIndex()是否相同，如果相同，应用current样式
+```$xslt
+:class="{'current' : currentIndex === index}"
+```
+
+其中current属性与menu-item属性是修饰同一个对象，所以使用&.current来定义CSS
+
+#### 7.8.2 点击菜单，跳转至第一个商品
+点击左边的菜单栏，右边的商品显示对应的商品。
+
+第一步：在菜单中绑定一个点击事件 @click
 
 
 

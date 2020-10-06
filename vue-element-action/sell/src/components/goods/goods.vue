@@ -2,7 +2,7 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
-        <li v-for="item in goods" :key="item.index" class="menu-item" :class="">
+        <li v-for="(item, index) in goods" :key="item.index" class="menu-item" :class="{'current':currentIndex === index}">
           <span class="text border-1px">
             <span v-show="item.type > 0" class="icon" :class="classMap[item.type]"></span>
             {{item.name}}
@@ -64,7 +64,7 @@ export default {
       for (let i = 0; i < this.listHeight.length; i++) {
         let height1 = this.listHeight[i]
         let height2 = this.listHeight[i + 1]
-        if (!height2 || (this.scrollY > height1 && this.scrollY < height2)) {
+        if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
           return i
         }
       }
@@ -151,6 +151,14 @@ export default {
         height 54px
         width 56px
         line-height 14px
+        &.current
+          position relative
+          z-index 10
+          margin-top -1px
+          background #ffffff
+          font-weight 700
+          .text
+            border-none()
         .icon
           display: inline-block
           vertical-align: top
