@@ -35,6 +35,7 @@
         </li>
       </ul>
     </div>
+    <shopcart></shopcart>
     <food :food="selectdFood"></food>
   </div>
 </template>
@@ -43,6 +44,7 @@
 
 import food from '@/components/food/food'
 import BScroll from 'better-scroll'
+import shopcart from '@/components/shopcart/shopcart'
 
 const ERR_OK = 0
 
@@ -133,7 +135,8 @@ export default {
     }
   },
   components: {
-    food
+    food,
+    shopcart
   }
 }
 </script>

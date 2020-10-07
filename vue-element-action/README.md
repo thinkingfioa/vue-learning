@@ -520,8 +520,68 @@ Vue的计算属性computed依赖于它的data属性，只要依赖的data属性�
 
 第三步：根据传入的index，获取到对应的dom
 
-第四步：利用better-scroll中提供的方法scrollToElement传入dom，实现显示
+第四步：利用better-scroll中提供的方法scrollToElement传入dom，实现指定显示
 
+### 7.9 shopcart购物车组件(1)
+
+#### 7.9.1 创建一个购物车组件
+第一步：在components下创建一个shopcart目录，并创建shopcart.vue。
+
+第二步：随后引入到good.vue中，并在components属性中注册
+
+#### 7.9.2 购物车布局分析
+购物车永远在底部，是固定，所以需要使用的fixed布局。然后分为左右两部分，左边是一个变长的，右边是一个固定长度，使用的是flex布局。
+
+#### 7.9.3 购物车样式
+购物车位于页面的底部，所以使用position fixed布局，并设置left=0, bottom=0。其他样式按照UI配置
+
+### 7.10 shopcart购物车组件(2)
+购物车分为左边和右边，左边是一个自动变长的，右边是一个定长。所以使用flex布局
+```$xslt
+.content
+    display flex
+    .content-left
+        flex 1
+    .content-right
+        flex 0 0 105px
+        width 105px
+```
+
+#### 7.10.1 logo超出部分
+三个元素都是并排的，所以使用display: inline-block限制为一行。由于logo存在超出部分，使用position relative并定义top: -10px超出
+```$xslt
+display inline-block
+vertical-align top
+position relative
+top -10px
+```
+
+通常使用display: inline-block都会使用vertical-align: top顶部对齐方式
+
+#### 7.10.2 固定logo的大小
+定义logo的width + height，然后再使用box-sizing: border-box来确定其大小。让内容随着自动变化而变化。
+
+了解box-sizing: border-box可[参考](https://blog.csdn.net/qq_26780317/article/details/80736514)
+
+#### 7.10.3 logo的圆角处理
+处理圆角有一个通用的做法是，将border-radius: 50%，这样就是一个圆形
+
+#### 7.10.4 颜色取值
+可以通过PS来获取颜色和长度
+
+#### 7.10.5 如何使一个元素是垂直居中的
+第一步：在其父元素上设置text-align: center（左右居中）
+
+第二步：在其自元素上设置line-height: 44px固定高度（上下居中）
+
+#### 7.10.6 设置一个竖线
+使用属性border-right，来定义竖线
+
+```$xslt
+border-right 1px solid rgba(255, 255, 255, 0.1)
+```
+
+### 7.11 shopcart购物车组件(3)
 
 
 
