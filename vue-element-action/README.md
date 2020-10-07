@@ -514,7 +514,13 @@ Vue的计算属性computed依赖于它的data属性，只要依赖的data属性�
 #### 7.8.2 点击菜单，跳转至第一个商品
 点击左边的菜单栏，右边的商品显示对应的商品。
 
-第一步：在菜单中绑定一个点击事件 @click
+第一步：在菜单中绑定一个点击事件 @click="selectMenu(index)"，并在methods属性中定义selectMenu方法.
+
+第二步：由于better-scroll会阻止默认的事件，比如click，需要设置其属性开启click: true, tap: true
+
+第三步：根据传入的index，获取到对应的dom
+
+第四步：利用better-scroll中提供的方法scrollToElement传入dom，实现显示
 
 
 
