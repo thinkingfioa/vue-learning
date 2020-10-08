@@ -7,18 +7,30 @@
             <i class="icon-shopping_cart"></i>
           </div>
         </div>
-        <div class="price">
-          <span>¥</span><span>34</span>
-        </div>
-        <div class="desc"></div>
+        <div class="price">0元</div>
+        <div class="desc">另需配送费¥{{deliveryPrice}}元</div>
       </div>
-      <div class="content-right"></div>
+      <div class="content-right">
+        <div class="pay">
+          ¥{{minPrice}}元起送
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
+  props: {
+    deliveryPrice: {
+      type: Number,
+      default: 0
+    },
+    minPrice: {
+      type: Number,
+      default: 0
+    }
+  }
 }
 </script>
 
@@ -69,11 +81,25 @@ export default {
           border-right 1px solid rgba(255, 255, 255, 0.1)
           font-size 16px
           font-weight 700
-          color #80858a
+          color rgba(255, 255, 255, 0.4)
         .desc
           display inline-block
           vertical-align top
+          margin 12px 0 0 12px
+          line-height 24px
+          color rgba(255, 255, 255, 0.4)
+          font-size 10px
       .content-right
         flex  0 0 105px
         width 105px
+        background #2b343c
+        text-align center
+        .pay
+          display inline-block
+          vertical-align top
+          margin 12px 8px 12px 8px
+          line-height 24px
+          color rgba(255, 255, 255, 0.4)
+          font-size 12px
+          font-weight 700
 </style>

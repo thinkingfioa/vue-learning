@@ -583,6 +583,39 @@ border-right 1px solid rgba(255, 255, 255, 0.1)
 
 ### 7.11 shopcart购物车组件(3)
 
+#### 7.11.1 价格垂直居中
+价格字段，可以使用line-height: 48px来实现垂直居中，但如果这样的话，右侧的竖线border也是撑满整个高度，所以使用line-height: 24px，同时加上margin-top: 12px来实现垂直居中
+```$xslt
+margin-top 12px
+line-height 24px
+```
+
+#### 7.11.2 传入配送费和起送费
+第一步：在goods组件中声明的shopcart标签中传入deliveryPrice和minPrice属性
+
+第二步：在shopcart组件的props属性中这两个属性。注意，其中其类型使用的是Number。对于数字类的变量，我们会提供缺省值
+```$xslt
+props: {
+    deliveryPrice: {
+      type: Number,
+      default: 0
+    },
+    minPrice: {
+      type: Number,
+      default: 0
+    }
+}
+```
+
+第三步：在需要使用的地方通过{{deliveryPrice}}来使用
+
+### 7.12 shopcart购物车组件(4)
+编写最右侧的结算
+
+
+
+
+
 
 
 
