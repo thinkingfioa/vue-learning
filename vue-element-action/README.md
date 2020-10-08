@@ -610,10 +610,84 @@ props: {
 第三步：在需要使用的地方通过{{deliveryPrice}}来使用
 
 ### 7.12 shopcart购物车组件(4)
-编写最右侧的结算
+购物车最右侧的结算较为简单，仅需要按照UI设计编写。
+
+#### 7.12.1 shopcart状态
+购物车其实有很多的状态。比如满减，已选商品总价格等。这个状态其实是根据选择的商品决定的，所以需要传入某个属性selectFoods。这个属性其实是有goods元素告知的，类型应该是一个Array，缺省值是一个[]
+```$xslt
+props: {
+    selectFoods: {
+        type: Array,
+        default () {
+            return []
+        }
+    }
+}
+```
+
+#### 7.12.1 购物车所有商品的总价
+从foods组件中传入了一个数组selectFoods给shopcart组件，数组selectFoods中其实是每个food，相对于data.json中的food，多了一个count属性
+
+利用计算属性computed，统计selectFoods中的总价格
+```$xslt
+computed: {
+    totalPrice () {
+        let total = 0
+        this.selectFoods.forEach((food) => {
+            total += food.price * food.count
+        })
+        return total
+    }
+}
+```
+
+#### 7.12.2 购物车所有商品数的总和
+利用计算属性computed，统计selectFoods中的总数目
+```$xslt
+totalCount () {
+  let count = 0
+  this.selectFoods.forEach((food) => {
+    count += food.count
+  })
+  return count
+}
+```
+
+### 7.13 shopcart购物车组件(5)
+显示出购物车中购买的总数目，使用position absolute来按照父亲元素的位置绝对定位，所以只需要加上top: 0和right: 0即可。接下来都是按照UI设计来编写样式
+
+#### 7.13.1 存在购买的总数目时，logo颜色发生变化
+当购买的总数目不为0时，logo的背景色和自身颜色发生变化。所以定义两个CSS，按照totalCount>0条件生效
+
+第一步: 编写两个CSS
+```$xslt
+.logo
+    width 100%
+    height 100%
+    border-radius 50%
+    background #2b343c
+    text-align center
+    &.highlight
+        background rgb(0, 160, 220)
+        .icon-shopping_cart
+            font-size 24px
+            color #80858a
+            line-height 44px
+        &.highlight
+            color #ffffff
+```
+
+第二步：使用表达式，动态绑定class
+```$xslt
+:class="{'highLight': totalCount > 0}"
+```
+
+#### 7.13.2 存在购买的总数目时，商品总数才会被显示出来
+使用关键字v-show，如果v-show表达式不符合，则当前的class不再显示，即 v-show="totalCount > 0"。非常通用的方法，记住
 
 
-
+### 7.14 shopcart购物车组件(6)
+购物车最右侧部分，有三种状态，需要根据selectFoods属性来选择。
 
 
 
