@@ -685,9 +685,28 @@ totalCount () {
 #### 7.13.2 存在购买的总数目时，商品总数才会被显示出来
 使用关键字v-show，如果v-show表达式不符合，则当前的class不再显示，即 v-show="totalCount > 0"。非常通用的方法，记住
 
-
 ### 7.14 shopcart购物车组件(6)
-购物车最右侧部分，有三种状态，需要根据selectFoods属性来选择。
+购物车最右侧部分，有三种状态，需要根据selectFoods属性来选择，所以同样定义一个computed计算属性payDesc。目前有三种状态
+
+1. 价格为0元时，显示：¥{{price}}元起送
+2. 当0 < 价格 <起送价时，显示：还差¥{{price}}元起送
+3. 当 价格 >= 起送价时，显示：去结算
+
+```$xslt
+payDesc () {
+  if (this.totalPrice === 0) {
+    return `¥${this.minPrice}元起送`
+  } else if (this.totalPrice > 0 && this.totalPrice < this.minPrice) {
+    return `还差¥${this.minPrice - this.totalPrice}元起送`
+  } else {
+    return '去结算'
+  }
+}
+```
+
+注意：
+1. 在JS代码中，建议等于判断使用'==='，不要使用'=='，因为'=='会做类型转换，可能有坑
+2. 在使用计算属性时，无需加上()，因为他本身就是一个属性
 
 
 
