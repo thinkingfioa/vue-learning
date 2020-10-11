@@ -711,6 +711,52 @@ payDesc () {
 #### 7.14.1  根据状态调整CSS
 上面的payDesc只是显示的内容不同，由于不同的状态，CSS格式也不同，所以仍然需要一个computed属性控制payClass，通过返回不同的字符串，动态绑定到:class="payClass"上
 
+### 7.15 cartcontrol组件(1)
+购物车的按钮，在项目中多次复用的，所以，我们自然也需要将这个添加购物车按钮，抽象成组件
+
+#### 7.15.1 创建cartcontrol.vue
+仔细思考下，这个购物车按钮，其实是根据不同的food数量，展示内容也不相同。所以，在props属性中需要一个food
+
+整个购物车按钮分为三个部分，左边是'减号'，中间是'数量'，右边是'加号'。并且左边在food.count=0时候不显示，所以使用v-show来控制；其中中间的'数量'也类似，需要使用v-show来控制
+
+```$xslt
+props: {
+    food: {
+        type: Object
+    }
+}
+```
+
+#### 7.15.2 引入cartcontrol.vue组件
+
+第一步：在good.vue组件中，先import，再在components属性中注册
+第二步：通过Vue传入food参数，<cartcontrol :food="food"></cartcontrol>
+
+#### 7.15.3 编写cartcontrol的样式
+cartcontrol共有对象，对象之间是横向排列，所以通过display: inline-block和vertical-align top来描述
+
+为了用户点击时区域变大，可以通过padding来实现，方便点击操作
+
+多个静态class可以一起写，比如<div class="class1 class2"></div>
+
+### 7.16 cartcontrol组件(2)
+点击添加按钮，增加数字，通过绑定@click="addCart"方法，增加food.count数目
+
+#### 7.16.1 通过JS给food添加属性count
+JS代码中，给一个JSON对象添加属性非常简单，只需要直接赋值就可以，无需过多代码。
+```$xslt
+food.count = 1
+```
+
+特别提醒：在Vue中给某个观察的对象food，添加一个不存在域时food.count，直接赋值是可以，但是Vue是检测不到新增域的变化，
+所以，在我们新增或删除某个域时候，我们需要使用Vue的一个接口来添加属性，这样添加的属性就能被观察到，当food.count发生变化能自动更新
+
+```$xslt
+import Vue from 'vue'
+
+Vue.set(this.food, 'count', 1)
+```
+
 
 
 
