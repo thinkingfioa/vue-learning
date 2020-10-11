@@ -757,6 +757,8 @@ import Vue from 'vue'
 Vue.set(this.food, 'count', 1)
 ```
 
+### 7.17 cartcontrol组件(3)
+添加商品进购物车，减号按钮，从
 
 
 
