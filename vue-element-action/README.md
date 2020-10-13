@@ -758,7 +758,30 @@ Vue.set(this.food, 'count', 1)
 ```
 
 ### 7.17 cartcontrol组件(3)
-添加商品进购物车，减号按钮，从
+添加商品进购物车，加号按钮，从右往左移动出减号。如果数量变成0，减号再从左往右消失。Vue2.0中对于transition做了较大的变化。需要进一步学习了解。
+
+#### 7.17.1 JS对象引用传递
+我们再good.vue中将food传入到cartcontrol.vue组件中，通过加号和减号按钮实现数量的变更，其实根本上也是对good.vue中的food产生影响
+
+我们在调用shotcart.vue组件时，其实需要传入一个selectFoods数组列表。这个selectFoods数组列表其实是所有count>1组成的，我们通过计算属性，来实现selectFoods改变，当food中的count发生变化时，计算属性selectFoods也发生改变
+```$xslt
+selectFoods () {
+  let foods = []
+  this.goods.forEach((good) => {
+    good.foods.forEach((food) => {
+      if (food.count > 0) {
+        foods.push(food)
+      }
+    })
+  })
+  return foods
+}
+```
+
+### 7.18 购物车小球动画实现(1)
+添加一个某个商品进购物车时，希望以动画的抛物线小球抛入购物车中。
+
+
 
 
 
