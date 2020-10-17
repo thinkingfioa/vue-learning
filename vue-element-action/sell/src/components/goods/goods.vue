@@ -110,6 +110,9 @@ export default {
       let el = foodList[index]
       this.foodsScroll.scrollToElement(el, 300)
     },
+    _drop (target) {
+      shopcart.drop(target)
+    },
     _initScroll () {
       if (!this.menuScroll) {
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {
@@ -155,6 +158,11 @@ export default {
     food,
     shopcart,
     cartcontrol
+  },
+  events: {
+    'cart.add' (target) {
+      this._drop(target)
+    }
   }
 }
 </script>

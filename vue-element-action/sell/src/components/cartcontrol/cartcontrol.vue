@@ -22,12 +22,13 @@ export default {
   created () {
   },
   methods: {
-    addCart () {
+    addCart (event) {
       if (!this.food.count) {
         Vue.set(this.food, 'count', 1)
       } else {
         this.food.count++
       }
+      this.$dispatch('cart.add', event.target)
     },
     decreaseCart () {
       if (this.food.count > 0) {
