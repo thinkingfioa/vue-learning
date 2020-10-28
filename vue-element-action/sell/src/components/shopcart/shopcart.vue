@@ -18,11 +18,14 @@
       </div>
     </div>
     <div class="ball-container">
-      <transition name="drop">
+
         <div v-for="ball in balls" :key="ball.index" v-show="ball.show" class="ball">
-          <div class="inner"></div>
+          <transition name="drop"
+            v-on:before-enter="beforeEnter"  v-on:enter="enter" v-on:after-enter="afterEnter">
+            <div class="inner"></div>
+          </transition>
         </div>
-      </transition>
+
     </div>
   </div>
 </template>
@@ -63,7 +66,8 @@ export default {
         {
           show: false
         }
-      ]
+      ],
+      dropBalls: []
     }
   },
   computed: {
@@ -104,6 +108,35 @@ export default {
   },
   methods: {
     drop (el) {
+      for (let i = 0; i < this.balls.length; i++) {
+        let ball = this.ball[i]
+        if (!ball.show) {
+          ball.show = true
+          ball.el = el
+          this.dropBalls.push(ball)
+          return
+        }
+      }
+    },
+    beforeEnter: function (el) {
+      let count = this.balls.length
+      while (count--) {
+        let ball = this.balls[count]
+        if (ball.show) {
+          let rect = ball.el.getBoundingClientRect()
+          let x = rect.left - 22
+          let y = -(window.innerHeight - rect.top - 22)
+          el.style.display = ''
+          el.style.webkitTransform = 'translated3d(0,${y}px,0'
+          el.style.transform = 'translated3d(0,${xs}px,0'
+        }
+      }
+    },
+    enter: function (el) {
+
+    },
+    afterEnter: function (el) {
+
     }
   }
 }
@@ -206,11 +239,9 @@ export default {
         left 32px
         right 22px
         z-index 200
-        transition all 0.4s
         .inner
           width 16px
           height 16px
           border-radius 50%
-          rgb(0, 160, 220)
-          transition all 0.4s
+          background rgb(0, 160, 220)
 </style>

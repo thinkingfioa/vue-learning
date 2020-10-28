@@ -28,7 +28,7 @@ export default {
       } else {
         this.food.count++
       }
-      this.$dispatch('cart.add', event.target)
+      this.$emit('cart-add', event.target)
     },
     decreaseCart () {
       if (this.food.count > 0) {

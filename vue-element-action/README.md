@@ -782,17 +782,41 @@ selectFoods () {
 添加一个某个商品进购物车时，希望以动画的抛物线小球抛入购物车中
 
 #### 7.18.1 定义小球
-小球是从点击的地方开始，做抛物线落地到购物车中。抛物线有两个方向的变化，一个是水平向左移动，一个是线上后下。
+小球是从点击的地方开始，做抛物线落地到购物车中。抛物线有两个方向的变化，所以需要两个层，外层控制水平向左移动，内层控制垂直方向变化，先上后下。
 
-由于在点击过程中，可能存在多个小球在空中，需要在data()方法中定一个balls，然后获取鼠标点击位置，发起移动效果
+由于在点击过程中，可能存在多个小球在空中，需要在data()方法中定一个balls数组，每个元素对应一个小球，暂定5个小球。然后获取鼠标点击位置，发起移动效果
 
 #### 7.18.2 获取抛物线起点
-抛物线起点是获取的，相对于界面的位置的横纵坐标。
+抛物线起点是获取的，相对于界面的位置的横纵坐标。我们需要在点击购物车按钮时，派发一个事件，将他的dom传出来。
 
-第一，获取点击界面的横纵坐标
+首先，我们在cartcontrol.vue中点击addCart()时，派发一个事件:this.$emit('cart-add', event.target)，并将event传出来
 
+第二，在goods组件中通过在cartcontrol组件上添加v-on:cart-add='cartAdd'，注册事件。当收到'cart-add'事件时调用cartAdd(el)方法
 
+第三，goods组件shopcart标签中添加 ref="shopcart"，然后在cartAdd(el)方法中调用drop方法。实现传入
 
+```
+cartAdd (el) {
+  this.$refs.shopcart.drop(el)
+}
+``` 
+
+### 7.19 购物车小球动画实现(2)
+shopcart组件中drop方法很简单，其实就是遍历下balls组数中球，拿到一个show=false的球，来做动画。动画过程中，我们需要一个dropBalls来记录正在落的小球
+
+```
+drop (el) {
+  for (let i = 0; i < this.balls.length; i++) {
+    let ball = this.ball[i]
+    if (ball.show) {
+      ball.show = true
+      ball.el = el
+      this.dropBalls.push(ball)
+      return
+    }
+  }
+}
+```
 
 
 
