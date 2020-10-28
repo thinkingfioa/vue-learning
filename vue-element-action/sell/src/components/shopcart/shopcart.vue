@@ -22,7 +22,7 @@
         <div v-for="ball in balls" :key="ball.index" v-show="ball.show" class="ball">
           <transition name="drop"
             v-on:before-enter="beforeEnter"  v-on:enter="enter" v-on:after-enter="afterEnter">
-            <div class="inner"></div>
+            <div class="inner inner-hook"></div>
           </transition>
         </div>
 
@@ -127,13 +127,18 @@ export default {
           let x = rect.left - 22
           let y = -(window.innerHeight - rect.top - 22)
           el.style.display = ''
-          el.style.webkitTransform = 'translated3d(0,${y}px,0'
-          el.style.transform = 'translated3d(0,${xs}px,0'
+          el.style.webkitTransform = `translated3d(0,${y}px,0)`
+          el.style.transform = `translated3d(0,${x}px,0)`
+          let inner = el.getElementsByClassName('inner-hook')[0]
+          inner.style.webkitTransform = `translated3d(${x}px,0,0)`
+          inner.style.transform = `translated3d(${x}px,0,0)`
         }
       }
     },
     enter: function (el) {
-
+      // 触发浏览器重绘
+      /* eslint-disable no-unused-vars */
+      let rf = el.offsetHeight
     },
     afterEnter: function (el) {
 
