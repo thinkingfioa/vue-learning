@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="ball-container">
-      <transition name="fade" v-for="ball in balls" :key="ball.index" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+      <transition v-for="ball in balls" :key="ball.index" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
         <div class="ball" v-show="ball.show" v-bind:css="false">
           <div class="inner inner-hook"></div>
         </div>
@@ -116,40 +116,25 @@ export default {
       }
     },
     beforeEnter (el) {
-      let count = this.balls.length
-      while (count--) {
-        let ball = this.balls[count]
-        if (ball.show) {
-          let rect = ball.el.getBoundingClientRect()
-          let x = rect.left - 32
-          let y = -(window.innerHeight - rect.top - 22)
-          el.style.display = '' // 清空display
-          el.style.webkitTransform = `translate3d(0, ${y}px, 0)`
-          el.style.transform = `translate3d(0, ${y}px, 0)`
-          let inner = el.getElementsByClassName('inner-hook')[0]
-          inner.style.webkitTransform = `translate3d(${x}px, 0, 0)`
-          inner.style.transform = `translate3d(${x}px, 0, 0)`
-        }
-      }
+      const ball = this.dropBalls[this.dropBalls.length - 1]
+      const rect = ball.el.getBoundingClientRect()
+      const x = rect.left - 32
+      const y = -(window.innerHeight - rect.top - 22)
+      el.style.display = ''
+      el.style.transform = el.style.webkitTransform = `translate3d(0,${y}px,0)`
+      const inner = el.getElementsByClassName('inner-hook')[0]
+      inner.style.transform = inner.style.webkitTransform = `translate3d(${x}px,0,0)`
     },
     enter (el, done) {
       // 触发浏览器重绘
-      /* eslint-disable no-unused-vars */
-      let rf = el.offsetHeight // 触发重绘html
-      setTimeout(() => {
-        this.$nextTick(() => {
-          el.style.webkitTransform = 'translate3d(0, 0, 0)'
-          el.style.transform = 'translate3d(0, 0, 0)'
-          let inner = el.getElementsByClassName('inner-hook')[0]
-          inner.style.webkitTransform = 'translate3d(0, 0, 0)'
-          inner.style.transform = 'translate3d(0, 0, 0)'
-          // el.addEventListener('transitionend', done)
-        })
-      }, 10)
+      this._reflow = document.body.offsetHeight
+      el.style.transform = el.style.webkitTransform = `translate3d(0,0,0)`
+      const inner = el.getElementsByClassName('inner-hook')[0]
+      inner.style.transform = inner.style.webkitTransform = `translate3d(0,0,0)`
+      el.addEventListener('transitionend', done)
     },
-    afterEnter: function (el) {
-      let ball = this.dropBalls.shift()
-      console.log('luweilin')
+    afterEnter (el) {
+      const ball = this.dropBalls.shift()
       if (ball) {
         ball.show = false
         el.style.display = 'none'
