@@ -111,7 +111,10 @@ export default {
       this.foodsScroll.scrollToElement(el, 300)
     },
     cartAdd (el) {
-      this.$refs.shopcart.drop(el)
+      // 体验优化，异步执行下落动画
+      this.$nextTick(() => {
+        this.$refs.shopcart.drop(el)
+      })
     },
     _initScroll () {
       if (!this.menuScroll) {

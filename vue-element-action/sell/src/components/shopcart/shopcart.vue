@@ -18,14 +18,11 @@
       </div>
     </div>
     <div class="ball-container">
-
-        <div v-for="ball in balls" :key="ball.index" v-show="ball.show" class="ball">
-          <transition name="drop"
-            v-on:before-enter="beforeEnter"  v-on:enter="enter" v-on:after-enter="afterEnter">
-            <div class="inner inner-hook"></div>
-          </transition>
+      <transition name="fade" v-for="ball in balls" :key="ball.index" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+        <div class="ball" v-show="ball.show" v-bind:css="false">
+          <div class="inner inner-hook"></div>
         </div>
-
+      </transition>
     </div>
   </div>
 </template>
@@ -109,7 +106,7 @@ export default {
   methods: {
     drop (el) {
       for (let i = 0; i < this.balls.length; i++) {
-        let ball = this.ball[i]
+        let ball = this.balls[i]
         if (!ball.show) {
           ball.show = true
           ball.el = el
@@ -118,30 +115,45 @@ export default {
         }
       }
     },
-    beforeEnter: function (el) {
+    beforeEnter (el) {
       let count = this.balls.length
       while (count--) {
         let ball = this.balls[count]
         if (ball.show) {
           let rect = ball.el.getBoundingClientRect()
-          let x = rect.left - 22
+          let x = rect.left - 32
           let y = -(window.innerHeight - rect.top - 22)
-          el.style.display = ''
-          el.style.webkitTransform = `translated3d(0,${y}px,0)`
-          el.style.transform = `translated3d(0,${x}px,0)`
+          el.style.display = '' // 清空display
+          el.style.webkitTransform = `translate3d(0, ${y}px, 0)`
+          el.style.transform = `translate3d(0, ${y}px, 0)`
           let inner = el.getElementsByClassName('inner-hook')[0]
-          inner.style.webkitTransform = `translated3d(${x}px,0,0)`
-          inner.style.transform = `translated3d(${x}px,0,0)`
+          inner.style.webkitTransform = `translate3d(${x}px, 0, 0)`
+          inner.style.transform = `translate3d(${x}px, 0, 0)`
         }
       }
     },
-    enter: function (el) {
+    enter (el, done) {
       // 触发浏览器重绘
       /* eslint-disable no-unused-vars */
-      let rf = el.offsetHeight
+      let rf = el.offsetHeight // 触发重绘html
+      setTimeout(() => {
+        this.$nextTick(() => {
+          el.style.webkitTransform = 'translate3d(0, 0, 0)'
+          el.style.transform = 'translate3d(0, 0, 0)'
+          let inner = el.getElementsByClassName('inner-hook')[0]
+          inner.style.webkitTransform = 'translate3d(0, 0, 0)'
+          inner.style.transform = 'translate3d(0, 0, 0)'
+          // el.addEventListener('transitionend', done)
+        })
+      }, 10)
     },
     afterEnter: function (el) {
-
+      let ball = this.dropBalls.shift()
+      console.log('luweilin')
+      if (ball) {
+        ball.show = false
+        el.style.display = 'none'
+      }
     }
   }
 }
@@ -244,9 +256,11 @@ export default {
         left 32px
         right 22px
         z-index 200
+        transition all 1s cubic-bezier(0.49, -0.29, 0.75, 0.41)
         .inner
           width 16px
           height 16px
           border-radius 50%
           background rgb(0, 160, 220)
+          transition all 1s linear
 </style>
