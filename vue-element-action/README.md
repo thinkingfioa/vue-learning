@@ -918,7 +918,7 @@ method: {
     overflow hidden
 ```
 
-#### 7.22.2 购物车通过BetterScroll实现滑动
+### 7.23 购物车通过BetterScroll实现滑动
 当选择的商品过多时，详情页显示不下，需要支持滑动。这里我们类似，使用BetterScroll来实现滑动。我们在computed的计算属性listShow中做
 列表的初始化，因为只有当listShow=true时，我们可能需要使用滑动功能。同时，每次创建前，先判断是否已经存在，如果已经存在则调用refresh()方法刷新即可
 
@@ -953,10 +953,53 @@ listShow () {
 }
 ```
 
+### 7.24 购物车详情(4)
 
+#### 7.24.1 清空购物车
+为清空添加清空事件，我们为在empty标签上添加@click="empty"方法
 
+```
+methods: {
+    empty () {
+      this.selectFoods.forEach((food) => {
+        food.count = 0
+      })
+    }
+}
+```
 
+#### 7.24.2 背景做模糊效果
+背景是一个具有模糊效果的背景，同时与整个购物车同级的效果，同样我们使用transition来实现滑动，添加transform all 0.5s属性
 
+模糊效果，使用backdrop-filter blur(10px)属性来实现模糊效果
+
+#### 7.24.3 点击背景区域，同样可以折叠
+我们在list-mask标签中，添加一个点击事件@click="hideList"，将变量fold设置为true，让其折叠。
+
+```
+methods: {
+    hideList () {
+      this.fold = true
+    }
+}
+```
+
+#### 7.24.3 去结算
+点击去结算区域，发生结算跳转。我们在div=content-right中添加@click="pay"事件，我们不再写订单详情的页面，仅简单的弹框支付
+
+```
+methods: {
+    pay () {
+      if (this.totalPrice < this.minPrice) {
+        return
+      }
+      window.alert(`支付${this.totalPrice}元`)
+    }
+}
+```
+
+我们发现，调用结算时，会@click="toggleList"展开商品详情页，因为属于点击的区间，Vue提供简单的修饰符，阻止默认事件。这样我们点击结算，就不会弹出商品详情页了
+@click.stop.prevent="pay"。这样就不会展开
 
 ## 第八章 项目实战-商品详情页
 商品详情页是通常是一个隐藏的。所以在data()方法中定义变量showFlag，缺省将其隐藏
