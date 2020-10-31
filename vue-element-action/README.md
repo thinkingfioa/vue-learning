@@ -782,7 +782,7 @@ selectFoods () {
 添加一个某个商品进购物车时，希望以动画的抛物线小球抛入购物车中
 
 #### 7.18.1 定义小球
-小球是从点击的地方开始，做抛物线落地到购物车中。抛物线有两个方向的变化，所以需要两个层，外层控制水平向左移动，内层控制垂直方向变化，先上后下。
+小球是从点击的地方开始，做抛物线落地到购物车中。抛物线有两个方向的变化，所以需要两个层，外层垂直方向，先上后下，内层控制水平向左移动。
 
 由于在点击过程中，可能存在多个小球在空中，需要在data()方法中定一个balls数组，每个元素对应一个小球，暂定5个小球。然后获取鼠标点击位置，发起移动效果
 
@@ -795,9 +795,14 @@ selectFoods () {
 
 第三，goods组件shopcart标签中添加 ref="shopcart"，然后在cartAdd(el)方法中调用drop方法。实现传入
 
+第四，为了优化体验，使用Vue的nextTick方法实现异步调用
+
 ```
 cartAdd (el) {
-  this.$refs.shopcart.drop(el)
+  // 体验优化，异步执行下落动画
+  this.$nextTick(() => {
+    this.$refs.shopcart.drop(el)
+  })
 }
 ``` 
 
@@ -817,6 +822,138 @@ drop (el) {
   }
 }
 ```
+
+### 7.20 购物车小球动画实现(3)
+
+#### 7.20.1 transition定义
+小球是一个抛物线运动轨迹，使用transition标签来实现动画。同时为transition定一个三个JS运动轨迹的方法
+
+- v-on:before-enter 进入时
+- v-on:enter 
+- v-on:after-enter 进入后
+
+原视频基于V1.0开发，部分已经不适用，需自行查看文档实现。
+
+### 7.21 购物车详情页(1) 结构 
+购物车详情是点击底部购物车浮出的页面，页面高度固定，超过高度支持上下滑动的滚轮，小于高度的话，下面留空白。
+
+整个结构分上下两个，上面是一个标题，下面是多个商品展示区。标题有左边的文本+右边清空按钮。商品展示区是一个列表，列表的每一项是一个商品。
+
+```
+<div class="shopcart-list" v-show="listShow">
+  <div class="list-head">
+    <h1 class="title">购物车</h1>
+    <span class="empty">清空</span>
+  </div>
+  <div class="list-container">
+    <ul>
+      <li class="food" v-for="(food, index) in selectFoods" :key="index">
+        <span class="name">{{food.name}}</span>
+        <div class="price">
+          <span>¥{{food.price*food.count}}</span>
+        </div>
+        <div class="cartcontrol-wrapper">
+          <cartcontrol :food="food"></cartcontrol>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+```
+
+### 7.22 购物车详情页(2) 样式
+购物车详情页默认是不显示，我们定义一个computed计算属性listShow来控制详情页是否展开。展开有两个条件，且两个条件都必需满足才可以
+
+1. 选中的totalCount > 0
+2. 定义一个变量fold，来表示当前是否时折叠状态，默认是true
+
+```
+computed: {
+  listShow () {
+    if (!this.totalCount) {
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.fold = true
+      return false
+    }
+    return !this.fold
+  }
+}
+```
+
+由于点击底部的购物车按钮，能够实现展开/关闭功能，所以需要加一个方法，实现取反。这样选择商品后，点击底部的购物车能实现展开/关闭购物车详情
+```
+method: {
+  toggleList () {
+    if (!this.totalCount) {
+      return
+    }
+    this.fold = !this.fold
+  }
+}
+```
+
+#### 7.22.1 购物车详情页 样式
+购物车详情页是一个绝对定位，我们通过添加transition效果，让其往上移动。这里使用了一个技巧: transform translate3d(0, -100%, 0)，让其往上移动-100%效果，
+然后通过设置某个域的最大长度max-height，以实现固定长度，超过最大长度，就支持滑动。
+
+```
+.shopcart-list
+  position absolute
+  left 0
+  top 0
+  z-index -1
+  width 100%
+  transform translate3d(0, -100%, 0)
+  &.fade-enter-active, &.fade-leave-active
+    transition: all 0.5s linear
+    transform translate3d(0, -100%, 0) //每个表项相对于当前自身的高度做一个偏移
+  &.fade-enter, &.fade-leave-active
+    transform translate3d(0, 0, 0)
+  .list-head
+    height 40px
+    line-height 40px
+  .list-container
+    padding 0 18px
+    max-height 217px
+    overflow hidden
+```
+
+#### 7.22.2 购物车通过BetterScroll实现滑动
+当选择的商品过多时，详情页显示不下，需要支持滑动。这里我们类似，使用BetterScroll来实现滑动。我们在computed的计算属性listShow中做
+列表的初始化，因为只有当listShow=true时，我们可能需要使用滑动功能。同时，每次创建前，先判断是否已经存在，如果已经存在则调用refresh()方法刷新即可
+
+使用BetterScroll时，需要告知传入的是哪个dom对象，该处我们应该传入的是list-container对象，通过在其标签上添加ref="listContainerWrapper"
+来找到并传入这个对象。
+
+```
+listShow () {
+  if (!this.totalCount) {
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+    this.fold = true
+    return false
+  }
+  let show = !this.fold
+  if (show) {
+    this.$nextTick(() => {
+      // 为了避免每次添加都创建一个scroll，判断当其不存在是则创建，如果存在，则调用起refresh()方法刷新即可
+      if (!this.scroll) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.scroll = new BScroll(this.$refs.listContainerWrapper, {
+          mouseWheel: true,
+          bounce: false,
+          click: true,
+          tap: true
+        })
+      } else {
+        this.scroll.refresh()
+      }
+    })
+  }
+  return show
+}
+```
+
+
 
 
 

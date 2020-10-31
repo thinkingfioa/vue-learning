@@ -1,6 +1,6 @@
 <template>
   <div class="shopcart">
-    <div class="content">
+    <div class="content" @click="toggleList">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highlight': totalCount > 0}">
@@ -24,10 +24,34 @@
         </div>
       </transition>
     </div>
+    <transition name="fade">
+      <div class="shopcart-list" v-show="listShow">
+        <div class="list-head">
+          <h1 class="title">购物车</h1>
+          <span class="empty">清空</span>
+        </div>
+        <div class="list-container" ref="listContainerWrapper">
+          <ul>
+            <li class="food" v-for="(food, index) in selectFoods" :key="index">
+              <span class="name">{{food.name}}</span>
+              <div class="price">
+                <span>¥{{food.price*food.count}}</span>
+              </div>
+              <div class="cartcontrol-wrapper">
+                <cartcontrol :food="food"></cartcontrol>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import BScroll from 'better-scroll'
+import cartcontrol from '@/components/cartcontrol/cartcontrol'
+
 export default {
   props: {
     selectFoods: {
@@ -64,7 +88,8 @@ export default {
           show: false
         }
       ],
-      dropBalls: []
+      dropBalls: [],
+      fold: true
     }
   },
   computed: {
@@ -101,6 +126,31 @@ export default {
       } else {
         return 'enough'
       }
+    },
+    listShow () {
+      if (!this.totalCount) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.fold = true
+        return false
+      }
+      let show = !this.fold
+      if (show) {
+        this.$nextTick(() => {
+          // 为了避免每次添加都创建一个scroll，判断当其不存在是则创建，如果存在，则调用起refresh()方法刷新即可
+          if (!this.scroll) {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.scroll = new BScroll(this.$refs.listContainerWrapper, {
+              mouseWheel: true,
+              bounce: false,
+              click: true,
+              tap: true
+            })
+          } else {
+            this.scroll.refresh()
+          }
+        })
+      }
+      return show
     }
   },
   methods: {
@@ -139,7 +189,16 @@ export default {
         ball.show = false
         el.style.display = 'none'
       }
+    },
+    toggleList () {
+      if (!this.totalCount) {
+        return
+      }
+      this.fold = !this.fold
     }
+  },
+  components: {
+    cartcontrol
   }
 }
 </script>
@@ -248,4 +307,56 @@ export default {
           border-radius 50%
           background rgb(0, 160, 220)
           transition all 1s linear
+    .shopcart-list
+      position absolute
+      left 0
+      top 0
+      z-index -1
+      width 100%
+      transform translate3d(0, -100%, 0)
+      &.fade-enter-active, &.fade-leave-active
+        transition: all 0.5s linear
+        transform translate3d(0, -100%, 0) //每个表项相对于当前自身的高度做一个偏移
+      &.fade-enter, &.fade-leave-active
+        transform translate3d(0, 0, 0)
+      .list-head
+        height 40px
+        line-height 40px
+        padding 0 18px
+        background #f3f5f7
+        border-bottom 1px solid rgba(7, 17, 27, 0.1)
+        .title
+          float left
+          font-size 14px
+          color rgb(7, 17, 27)
+        .empty
+          float right
+          font-size 12px
+          color rgb(0, 160, 220)
+      .list-container
+        padding 0 18px
+        max-height 217px
+        overflow hidden
+        background #fff
+        .food
+          position relative
+          padding 12px 0
+          border-size border-box
+          border-1px(rgba(7, 17, 27, 0.1))
+          .name
+            line-height 24px
+            font-size 14px
+            color rgb(7, 17, 27)
+          .price
+            position: absolute
+            right 90px
+            bottom 12px
+            line-height 20px
+            font-size 14px
+            font-weight 700
+            color rgb(240, 20, 20)
+          .cartcontrol-wrapper
+            position: absolute
+            right 0
+            bottom 6px
 </style>
