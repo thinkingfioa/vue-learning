@@ -16,7 +16,7 @@
         <li v-for="item in goods" :key="item.index" class="foods-list food-list-hook">
           <h1 class="title">{{item.name}}</h1>
           <ul>
-            <li @click="selectFood(food, $event)" v-for="food in item.foods" :key="food.index" class="food-item">
+            <li @click="selectFood(food)" v-for="food in item.foods" :key="food.index" class="food-item">
               <div class="icon">
                 <img :src="food.icon" width="57px" height="57px">
               </div>
@@ -39,7 +39,7 @@
       </ul>
     </div>
     <shopcart ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
-    <food :food="selectdFood"></food>
+    <food :food="selectdFood" ref="food"></food>
   </div>
 </template>
 
@@ -155,6 +155,7 @@ export default {
     },
     selectFood (food) {
       this.selectdFood = food
+      this.$refs.food.show()
     }
   },
   components: {

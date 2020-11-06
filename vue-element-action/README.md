@@ -1006,9 +1006,9 @@ methods: {
 
 ### 8.1 商品详情页实现(1)
 
-商品详情页是由商品页传入，在props中定义属性food，传入传入参数
+商品详情页是由商品页good.vue传入，在props中定义属性food，传入参数
 
-商品详情页是一个相对于浏览器窗口是固定位置，使用position fixed
+商品详情页是一个相对于浏览器窗口是固定位置，使用position fixed。
 
 ```
 position fixed
@@ -1016,6 +1016,7 @@ z-index 30
 top 0
 left 0
 width 100%
+background #fff
 ```
 
 通常对于一个弹出的页面，都是一个绝对定位的布局，如果是有父亲存在，使用position:absolute
@@ -1025,8 +1026,38 @@ width 100%
 
 1. 编写<food>标签，使用:food=selectdFood来传参
 2. 在data方法中selectdFood缺省变量
-3. 在需要点击的地方添加@click="selectFood(food, $event)"方法，实现调用
-4. 在methods属性中添加方法selectFood(food, $event)，该方法主要的目的就是将选中的food，赋值给data()中selectdFood
+3. 在需要点击的地方添加@click="selectFood(food)"方法，实现调用
+4. 在methods属性中添加方法selectFood(food)，该方法主要的目的就是将选中的food，赋值给data()中selectdFood=food
 5. 导入food.vue，如: import food from '@/components/food/food'
 6. 在components属性中定义food
+
+### 8.2 商品详情页实现(2)
+实现点击把food商品展开商品详情。我们在实现方法时，父组件可以调用子组件的方法，子组件不能调用父组件的方法。所以我们在子组件food.vue中定义一个方法show()，然后在父组件goods.vue中调用，实现商品页的展开
+
+在VUE定义方法过程中，如果该方法仅在内部使用，方法名称一般以下划线"_"开头
+
+```
+selectFood (food) {
+  this.selectdFood = food
+  this.$refs.food.show()
+}
+```
+
+#### 8.2.1 商品详情页动画
+点击food商品页，实现从右往左出现的动画。首先我们声明标签transition，然后为其配置CSS格式
+
+```
+transition all 0.2s linear
+&.move-enter-active, &.move-leave-active
+  transform translate3d(0, 0, 0)
+&.move-enter, &.move-leave
+  transform translate3d(100%, 0, 0)
+```
+
+#### 8.2.2 商品详情页 - 样式
+首先，详情页最上面是一个图，对应于food.image地址。这里我们有一个需要思考的问题：
+
+food.image是一个图片，这个图片的宽高是随着手机屏幕大小变化的，所以我们不能写死；另一方面，如果这个图片不先预留位置，等加载后，就会从给用户一个抖动过程，不太友好。
+
+### 8.3 商品详情页实现(3)
 
