@@ -1047,10 +1047,14 @@ selectFood (food) {
 点击food商品页，实现从右往左出现的动画。首先我们声明标签transition，然后为其配置CSS格式
 
 ```
-transition all 0.2s linear
-&.move-enter-active, &.move-leave-active
+&.move-enter-active
+  transition all 0.2s linear
   transform translate3d(0, 0, 0)
-&.move-enter, &.move-leave
+&.move-enter
+  transform translate3d(100%, 0, 0)
+&.move-leave-active
+  transition all 0.2s linear
+&.move-leave-to
   transform translate3d(100%, 0, 0)
 ```
 
@@ -1060,4 +1064,58 @@ transition all 0.2s linear
 food.image是一个图片，这个图片的宽高是随着手机屏幕大小变化的，所以我们不能写死；另一方面，如果这个图片不先预留位置，等加载后，就会从给用户一个抖动过程，不太友好。
 
 ### 8.3 商品详情页实现(3)
+我们如果让food.image图片随着手机屏幕大小变化而变化呢？这里我们使用到一个黑魔法，我们将属性height设置为0，然后设置width: 100%和padding-top: 100%
 
+这样的话，padding就会和height保持一致了。这样就是一个宽高相等的容器了，接下来img就直接全部填充就可以了
+
+```
+.image-header
+  position relative
+  width 100%
+  height 0
+  padding-top 100%
+  .image
+    position absolute
+    top 0
+    left 0
+    width 100%
+    height 100%
+```
+
+#### 8.3.1 添加返回按钮
+使用标签i=icon-arrow_lift，来引入一个返回按钮。返回按钮外面套一个div标签，方便定位。
+
+外层使用的绝对定位，同时给标签i=icon-arrow_lift添加padding属性，让其点击范围比较大。我们为标签i=icon-arrow_lift添加
+
+```
+<div class="back" @click="hide">
+    <i class="icon-arrow_lift"/>
+</div>
+
+.back
+    position absolute 
+    top 10px
+    left 0
+    .icon-arrow_lift
+      display block
+      padding 10px
+      font-size 20px
+      color #fff
+```
+
+#### 8.3.2 编写后续样式
+后续是一个内容区域，内容区域分三块：标题、销售详情和价格
+
+```
+<div class="content">
+  <h1 class="title">{{food.name}}</h1>
+  <div class="detail">
+    <span class="sell-count">月售{{food.sellCount}}份</span>
+    <span class="rating">好评率{{food.rating}}</span>
+  </div>
+  <div class="price">
+    <span class="now">¥{{food.price}}</span>
+    <span v-show="food.oldPrice" class="old">¥{{food.oldPrice}}</span>
+  </div>
+</div>
+```
