@@ -1119,3 +1119,51 @@ food.image是一个图片，这个图片的宽高是随着手机屏幕大小变�
   </div>
 </div>
 ```
+
+### 8.4 商品详情页实现(4)
+先给上诉的内容区域三块：标题、销售详情和价格，添加CSS格式。
+
+添加较为简单，其中想提醒下，商品原始价格使用横线删除线，可以通过属性text-decoration: line-through来实现
+
+#### 8.4.1 为整个页面添加滚动效果
+使用Better-Scroll滚动整个页面。 
+
+- 第一步：引入better-scroll。 import BScroll from 'better-scroll'
+- 第二步：我们应该在show()方法中添加better-scroll中。同时必须使用$nextTick方法中调用
+
+```
+methods: {
+    show () {
+      this.showFlag = true
+      this.$nextTick(() => {
+        // 为了避免每次添加都创建一个scroll，判断当其不存在是则创建，如果存在，则调用起refresh()方法刷新即可
+        if (!this.scroll) {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.scroll = new BScroll(this.$refs.foodWrapper, {
+            mouseWheel: true,
+            bounce: false,
+            click: true,
+            tap: true
+          })
+        } else {
+          this.scroll.refresh()
+        }
+      })
+    }
+}
+```
+
+#### 8.4.2 写购物车组件
+购物车组件相对于父组件是绝对定位到设计稿的位置。同时这个位置其实有两个状态：一个是购物车按钮（当有购买数量的时候），一个是购买按钮。某个时刻只能显示一个按钮
+
+- 购物车按钮。购物车按钮是我们原来就写好的cartcontrol组件。可以先通过import引入，然后在属性components组册好，就可以使用了。使用时，需要传入参数food
+- 购买按钮。购买按钮
+
+
+
+
+
+
+
+
+
