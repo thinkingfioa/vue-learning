@@ -1157,11 +1157,43 @@ methods: {
 购物车组件相对于父组件是绝对定位到设计稿的位置。同时这个位置其实有两个状态：一个是购物车按钮（当有购买数量的时候），一个是购买按钮。某个时刻只能显示一个按钮
 
 - 购物车按钮。购物车按钮是我们原来就写好的cartcontrol组件。可以先通过import引入，然后在属性components组册好，就可以使用了。使用时，需要传入参数food
-- 购买按钮。购买按钮
+- 购买按钮。购买按钮，购买按钮是"加入购物车"字段样式，该样式在没有food.count时候或者food.count === 0时候展示
 
+### 8.5 商品详情页实现(5)
+购物车按钮和购买按钮我们都是绝对定位: position absolute。其中购物车按钮内部有6px的padding，所以right和bottom设置为12px
 
+```
+.cartcontrol-wrapper
+    position absolute
+    right 12px
+    bottom 12px
+.buy
+    position absolute
+    right 18px
+    bottom 18px
+    z-index 10
+    line-height 24px
+    padding 0 12px
+    box-sizing border-box
+    border-radius 12px
+    font-size 10px
+    color #ffffff
+    background rgb(0, 160, 220)
+```
 
+#### 8.5.1 添加点击加入购物车按钮
+点击"加入购物车"按钮后，应该显示cartcontrol组件。通过添加click事件实现。由于food对象可能第一次有属性'count'，所以我们需要通过Vue.set设置属性，
+以保证Vue可以看到属性变化。当然，需要先导入Vue控件: import Vue from 'vue'
 
+```
+addClick (event) {
+  this.$emit('cart-add', event.target)
+  Vue.set(this.food, 'count', 1)
+}
+```
+
+#### 8.5.2 为cartcontrol组件添加stop.prevent属性
+goods.vue界面点击cartcontrol时，会发现跳转进入详情，这不是我们希望的。为cartcontrol组件添加stop.prevent来阻止跳转
 
 
 
