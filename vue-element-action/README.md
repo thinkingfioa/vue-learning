@@ -1195,6 +1195,26 @@ addClick (event) {
 #### 8.5.2 为cartcontrol组件添加stop.prevent属性
 goods.vue界面点击cartcontrol时，会发现跳转进入详情，这不是我们希望的。为cartcontrol组件添加stop.prevent来阻止跳转
 
+#### 8.5.3 商品详情页实现小球跳转
+
+- 加入购物车。这个比较简单，只需要在方法中通过通过调用emit事件，发给good.vue父组件即可.
+
+```
+addClick (event) {
+  Vue.set(this.food, 'count', 1)
+  this.$emit('cart-add', event.target)
+},
+```
+
+- cartcontrol组件由于在food.vue中使用，父组件则是food.vue，所以我们需要中转一次，将emit事件发送出去
+
+```
+<cartcontrol :food="food" @cart-add="cartAdd"></cartcontrol>
+cartAdd (target) {
+  this.$emit('cart-add', target)
+}
+```
+
 
 
 

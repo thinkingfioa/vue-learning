@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="cartcontrol-wrapper">
-          <cartcontrol :food="food"></cartcontrol>
+          <cartcontrol :food="food" @cart-add="cartAdd"></cartcontrol>
         </div>
         <transition name="fade">
           <div @click.stop.prevent="addClick" class="buy" v-show="!food.count || food.count === 0">加入购物车</div>
@@ -68,8 +68,11 @@ export default {
       this.showFlag = false
     },
     addClick (event) {
-      this.$emit('cart-add', event.target)
       Vue.set(this.food, 'count', 1)
+      this.$emit('cart-add', event.target)
+    },
+    cartAdd (target) {
+      this.$emit('cart-add', target)
     }
   },
   components: {
@@ -166,7 +169,9 @@ export default {
         font-size 10px
         color #ffffff
         background rgb(0, 160, 220)
-        &.fade-leave-active
+        &.buy-enter-active, &.buy-leave-active
           transition all 0.2s
           opacity 1
+        &.buy-enter, &.buy-leave-active
+          opacity 0
 </style>

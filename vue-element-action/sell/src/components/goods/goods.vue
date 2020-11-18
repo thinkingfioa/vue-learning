@@ -39,7 +39,7 @@
       </ul>
     </div>
     <shopcart ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
-    <food :food="selectdFood" ref="food"></food>
+    <food :food="selectdFood" v-on:cart-add="cartAdd" ref="food"></food>
   </div>
 </template>
 
@@ -111,6 +111,7 @@ export default {
       this.foodsScroll.scrollToElement(el, 300)
     },
     cartAdd (el) {
+      console.log(el)
       // 体验优化，异步执行下落动画
       this.$nextTick(() => {
         this.$refs.shopcart.drop(el)
