@@ -25,6 +25,7 @@
         <transition name="fade">
           <div @click.stop.prevent="addClick" class="buy" v-show="!food.count || food.count === 0">加入购物车</div>
         </transition>
+        <split class=""></split>
       </div>
     </div>
   </transition>
@@ -35,6 +36,7 @@
 import Vue from 'vue'
 import BScroll from 'better-scroll'
 import cartcontrol from '@/components/cartcontrol/cartcontrol'
+import split from '@/components/split/split'
 
 export default {
   props: {
@@ -76,7 +78,8 @@ export default {
     }
   },
   components: {
-    cartcontrol
+    cartcontrol,
+    split
   }
 }
 </script>
@@ -174,4 +177,6 @@ export default {
           opacity 1
         &.buy-enter, &.buy-leave-active
           opacity 0
+      .split
+        position absolute
 </style>
