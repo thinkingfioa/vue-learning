@@ -18,14 +18,18 @@
             <span class="now">¥{{food.price}}</span>
             <span v-show="food.oldPrice" class="old">¥{{food.oldPrice}}</span>
           </div>
+          <div class="cartcontrol-wrapper">
+            <cartcontrol :food="food" @cart-add="cartAdd"></cartcontrol>
+          </div>
+          <transition name="fade">
+            <div @click.stop.prevent="addClick" class="buy" v-show="!food.count || food.count === 0">加入购物车</div>
+          </transition>
         </div>
-        <div class="cartcontrol-wrapper">
-          <cartcontrol :food="food" @cart-add="cartAdd"></cartcontrol>
+        <split class="split1" v-show="food.info"></split>
+        <div class="info" v-show="food.info">
+          <h1 class="title">商品信息</h1>
+          <p class="text" >{{food.info}}</p>
         </div>
-        <transition name="fade">
-          <div @click.stop.prevent="addClick" class="buy" v-show="!food.count || food.count === 0">加入购物车</div>
-        </transition>
-        <split class=""></split>
       </div>
     </div>
   </transition>
@@ -103,7 +107,6 @@ export default {
     &.move-leave-to
       transform translate3d(100%, 0, 0)
     .food-content
-      position: relative;
       .image-header
         position relative
         width 100%
@@ -127,7 +130,7 @@ export default {
       .content
         position relative
         padding 18px
-        width 100%
+        width 90%
         .title
           line-height 14px
           margin-bottom 8px
@@ -156,27 +159,38 @@ export default {
             text-decoration line-through
             font-size 10px
             color rgb(147, 153, 159)
-      .cartcontrol-wrapper
-        position absolute
-        right 12px
-        bottom 12px
-      .buy
-        position absolute
-        right 18px
-        bottom 18px
-        z-index 10
-        line-height 24px
-        padding 0 12px
-        box-sizing border-box
-        border-radius 12px
-        font-size 10px
-        color #ffffff
-        background rgb(0, 160, 220)
-        &.buy-enter-active, &.buy-leave-active
-          transition all 0.2s
-          opacity 1
-        &.buy-enter, &.buy-leave-active
-          opacity 0
-      .split
-        position absolute
+        .cartcontrol-wrapper
+          position absolute
+          right 12px
+          bottom 12px
+        .buy
+          position absolute;
+          right 18px
+          bottom 18px
+          z-index 10
+          line-height 24px
+          padding 0 12px
+          box-sizing border-box
+          border-radius 12px
+          font-size 10px
+          color #ffffff
+          background rgb(0, 160, 220)
+          &.buy-enter-active, &.buy-leave-active
+            transition all 0.2s
+            opacity 1
+          &.buy-enter, &.buy-leave-active
+            opacity 0
+      .info
+        position relative
+        padding 18px
+        .title
+          line-height 14px
+          margin-bottom 6px
+          font-size 14px
+          color rgb(7, 17, 27)
+        .text
+          padding 0px 8px
+          line-height 24px
+          font-size 12px
+          color rgb(77, 85, 93)
 </style>

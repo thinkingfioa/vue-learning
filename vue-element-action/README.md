@@ -1215,6 +1215,22 @@ cartAdd (target) {
 }
 ```
 
+### 8.6 split组件实现(6)
+商品页接下来是一个分割，分割现象很多地方都有使用，我们封装成一个split.vue组件，被别的地方引用
+
+- 第一步：建立split文件夹和split.vue组件
+- 第二步: 在food.vue组件中引入split.vue组件，并注册到components属性中
+- 第三步：使用split组件。 <split class="split"></split>
+
+### 8.6.1 split组件样式
+split样式很简单
+
+- 上下有1像素的border。使用border-top和border-bottom
+- 有一个背景色
+- 宽度是100%。 高度是16px
+
+### 8.6.2 商品介绍
+split下方是一个商品介绍，为其添加布局。该布局共分为两个区域：title+信息。两部分都比较简单，直接按照UI设计稿编写即可
 
 
 
