@@ -1333,6 +1333,55 @@ data () {
 #### 8.8.2 ratingselect组件写一些样式(2)
 进入ratingselect.vue中样式编写
 
+先写下三个组件: 全部、推荐和吐槽。UI设计稿这里的底部有一个border。需要非常注意的是，我们不能直接使用padding 18px 18px，否则底部的border将紧贴着作左右边框
+
+使用padding和margin共同作用，达到效果
+
+```
+.ratingselect
+    .rating-type
+      padding 18px 0
+      margin 0 18px
+      border-1px(rgba(7, 17, 27, 0.1))
+```
+
+### 8.9 ratingselect组件(3)
+接下来我们编写三个组件: 全部、推荐和吐槽样式。观察UI设计稿发现，三个框有共性和差一点，共性在于大小完全一样，差异在于颜色等不通。定义出三个class来应对：block、positive和negative
+
+三个组件是并排的，所以使用display:block
+
+```
+.block
+    display inline-block
+    padding 8px 12px
+    margin-right 8px
+    line-height 16px
+    border-radius 2px
+    font-size 12px
+    color rgb(77, 85, 93)
+    .count
+      margin-left 2px
+      font-size 8px
+    &.positive
+      background rgba(0, 160, 220, 0.2)
+    &.negative
+      background rgba(77, 85, 93, 0.2)
+
+<span class="block positive">{{desc.all}}<span class="count">47</span></span>
+<span class="block positive">{{desc.positive}}<span class="count">40</span></span>
+<span class="block negative">{{desc.negative}}<span class="count">7</span></span>
+```
+
+### 8.9.1 选中激活active表现
+
+点击并排的三个组件，呈现激活按钮。active是一个选择添加的，也就是满足某个条件，添加上active样式。所以需要使用上:class="{'active':selectType=3}
+
+```
+<span class="block positive" :class="{'active':selectType===2}">{{desc.all}}<span class="count">47</span></span>
+<span class="block positive" :class="{'active':selectType===0}">{{desc.positive}}<span class="count">40</span></span>
+<span class="block negative" :class="{'active':selectType===1}">{{desc.negative}}<span class="count">7</span></span>
+```
+
 
 
 

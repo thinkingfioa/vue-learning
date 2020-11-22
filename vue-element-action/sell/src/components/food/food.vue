@@ -61,7 +61,7 @@ export default {
   data () {
     return {
       showFlag: false,
-      selectType: ALL,
+      selectType: 0,
       onlyContent: true,
       desc: {
         all: '全部',
