@@ -1232,6 +1232,107 @@ split样式很简单
 ### 8.6.2 商品介绍
 split下方是一个商品介绍，为其添加布局。该布局共分为两个区域：title+信息。两部分都比较简单，直接按照UI设计稿编写即可
 
+### 8.7 ratingselect组件(1)
+商品评价区块。商品评价该部分相对复杂点。我们发现，该部分在商家评论中也是有类似结构，所以建议抽象成一个公共组件来使用。
+
+#### 8.7.1 ratingselect设置一个props
+使用ratingselect组件，为其设置一些props，传入props参数，也就是外部可以传入组件的一些变量。大概包括如下props参数
+
+- ratings - 所有的评论
+- 选择的类型selectType - 正面、负面和所有
+- 只看有内容的评价onlyContent - 是一个Boolean类型
+- 评价的描述desc - 定义一个对象，有三个属性: all、positive和negative
+
+```
+props: {
+    ratings: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    selecType: {
+      // 全部=2，正向=0，负面=1
+      type: Number,
+      default: ALL
+    },
+    onlyContent: {
+      type: Boolean,
+      default: false
+    },
+    desc: {
+      type: Object,
+      default () {
+        return {
+          all: '全部',
+          positive: '满意',
+          negative: '不满意'
+        }
+      }
+    }
+}
+```
+
+#### 8.7.2 ratingselect编写dom组件
+通常我们在写一个组件时，最外层都会写一个div，其class用的是组件的名字。随后，分成上下两个区块，第一个区块是上面的类型，第二个是下面的选择区域
+
+第一个区块包含了三个部分：全部、正面和负面
+第二个区域包含了两个部分：icon和text
+
+```
+<div class="ratingselect">
+    <div class="rating-type">
+      <span>{{desc.all}}</span>
+      <span>{{desc.positive}}</span>
+      <span>{{desc.negative}}</span>
+    </div>
+    <div class="switch">
+      <span class="icon-check_circle"></span>
+      <span class="text">只看有内容的评价</span>
+    </div>
+</div>
+```
+
+#### 8.7.4 引入ratingselect组件
+在food.vue组件中引入ratingselect.vue
+
+### 8.8 ratingselect组件(2)
+在food.vue组件中引入ratingselect.vue后，需要在food.vue组件中使用ratingselect.vue时传入必要的参数
+
+```
+data () {
+    return {
+      selectType: ALL,
+      onlyContent: true,
+      desc: {
+        all: '全部',
+        positive: '推荐',
+        negative: '吐槽'
+      }
+    }
+}
+
+<ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
+```
+
+### 8.8.1 ratingselect组件写一些样式
+首先是先写food.vue组件中的商品评价样式。样式比较简单，只要注意，padding只能写padding-top，因为下方的评价有一个border是横穿整个屏幕了，如果页写了padding-left将无法写出整个border。
+
+只能在title中使用margin-left来修饰
+
+```
+.rating
+    padding-top 18px
+    .title
+      line-height 14px
+      margin-left 18px
+      font-size 14px
+      color rgb(7, 17, 27)
+```
+
+#### 8.8.2 ratingselect组件写一些样式(2)
+进入ratingselect.vue中样式编写
+
 
 
 

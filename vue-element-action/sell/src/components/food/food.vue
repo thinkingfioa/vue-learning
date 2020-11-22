@@ -25,11 +25,16 @@
             <div @click.stop.prevent="addClick" class="buy" v-show="!food.count || food.count === 0">加入购物车</div>
           </transition>
         </div>
-        <split class="split1" v-show="food.info"></split>
+        <split v-show="food.info"></split>
         <div class="info" v-show="food.info">
-          <h1 class="title">商品信息</h1>
+          <h1 class="title">商品介绍</h1>
           <p class="text" >{{food.info}}</p>
         </div>
+        <split></split>
+        <div class="rating">
+          <h1 class="title">商品评价</h1>
+        </div>
+        <ratingselect :selectType="selectType" :onlyContent="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
       </div>
     </div>
   </transition>
@@ -41,6 +46,11 @@ import Vue from 'vue'
 import BScroll from 'better-scroll'
 import cartcontrol from '@/components/cartcontrol/cartcontrol'
 import split from '@/components/split/split'
+import ratingselect from '@/components/ratingselect/ratingselect'
+
+// const POSITIVE = 0
+// const NEGATIVE = 1
+const ALL = 2
 
 export default {
   props: {
@@ -50,12 +60,21 @@ export default {
   },
   data () {
     return {
-      showFlag: false
+      showFlag: false,
+      selectType: ALL,
+      onlyContent: true,
+      desc: {
+        all: '全部',
+        positive: '推荐',
+        negative: '吐槽'
+      }
     }
   },
   methods: {
     show () {
       this.showFlag = true
+      this.selectType = ALL
+      this.onlyContent = true
       this.$nextTick(() => {
         // 为了避免每次添加都创建一个scroll，判断当其不存在是则创建，如果存在，则调用起refresh()方法刷新即可
         if (!this.scroll) {
@@ -83,7 +102,8 @@ export default {
   },
   components: {
     cartcontrol,
-    split
+    split,
+    ratingselect
   }
 }
 </script>
@@ -193,4 +213,11 @@ export default {
           line-height 24px
           font-size 12px
           color rgb(77, 85, 93)
+      .rating
+        padding-top 18px
+        .title
+          line-height 14px
+          margin-left 18px
+          font-size 14px
+          color rgb(7, 17, 27)
 </style>
