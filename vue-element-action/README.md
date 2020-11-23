@@ -1382,6 +1382,36 @@ data () {
 <span class="block negative" :class="{'active':selectType===1}">{{desc.negative}}<span class="count">7</span></span>
 ```
 
+### 8.10 ratingselect组件(4)
+接下来我们写switch样式。 switch由两部分组成：左边是icon，右边是文本。通过两个span让其并列排序
 
+这里有一个技巧，让其内容垂直显示。通过添加display:inline-block && vertical-align:top居中显示
 
+```
+.switch
+  padding 12px 18px
+  line-height 24px
+  border-bottom 1px solid rgba(7, 17, 27, 0.1)
+  color rgb(147, 153, 159)
+  font-size 0
+  .icon-check_circle
+    display inline-block
+    vertical-align top
+    margin-right 4px
+    font-size 24px
+  .text
+    display inline-block
+    vertical-align top
+    line-height 24px
+    font-size 12px
+```
 
+### 8.10.1 当按钮icon选中时，由绿色显示
+通过PS获取到绿色的 #00c850，通过onlyContent=true来激活on属性。
+
+```
+&.on
+    .icon-check_circle
+      color #00c850
+<div class="switch" :class="{'on':onlyContent}">
+```
