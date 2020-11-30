@@ -34,7 +34,7 @@
         <div class="rating">
           <h1 class="title">商品评价</h1>
         </div>
-        <ratingselect :selectType="selectType" :onlyContent="onlyContent" :desc="desc" :ratings="food.ratings"></ratingselect>
+        <ratingselect :selectType="selectType" :onlyContent="onlyContent" :desc="desc" :ratings="food.ratings" @ratingtype-select="ratingtypeSelect" @content-toggle="contentToggle"></ratingselect>
       </div>
     </div>
   </transition>
@@ -98,6 +98,12 @@ export default {
     },
     cartAdd (target) {
       this.$emit('cart-add', target)
+    },
+    ratingtypeSelect (selectType) {
+      this.selectType = selectType
+    },
+    contentToggle (onlyContent) {
+      this.onlyContent = onlyContent
     }
   },
   components: {

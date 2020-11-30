@@ -1415,3 +1415,36 @@ data () {
       color #00c850
 <div class="switch" :class="{'on':onlyContent}">
 ```
+
+### 8.11 ratingselect组件(5)
+接下来给ratingselect组件添加事件，主要包括两类：按钮的事件和switch事件
+
+#### 8.11.1 给按钮添加事件
+我们希望点中按钮，激活active的class，active的class是由selectType控制的，所以只需要添加一个@click方法，来修改selectType属性即可。
+
+在ratingselect组件中修改了selectType属性，我们如何让父组件food.vue来感知，并修改其自己的selectType。这里我们通过使用this.$emit在父子组件中传递。
+
+```
+methods: {
+    select (type) {
+      this.$emit('ratingtype-select', type)
+    }
+}
+```
+
+我们在副组件food.vue中添加补充拦截事件，修改对应的值
+
+```
+<ratingselect :selectType="selectType" :onlyContent="onlyContent" :desc="desc" :ratings="food.ratings" @ratingtype-select="ratingtypeSelect" @content-toggle="contentToggle"></ratingselect>
+
+ratingtypeSelect (selectType) {
+  this.selectType = selectType
+}
+```
+
+#### 8.11.2 填入补充的数
+每个按钮中，其实有一个评论数需要展示，我们将评论的条数计算出来，填入。
+
+
+
+
