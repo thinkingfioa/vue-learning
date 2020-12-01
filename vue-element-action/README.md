@@ -1445,6 +1445,32 @@ ratingtypeSelect (selectType) {
 #### 8.11.2 填入补充的数
 每个按钮中，其实有一个评论数需要展示，我们将评论的条数计算出来，填入。
 
+### 8.12 评价列表(1)
+商品评价列表分为两个状态：一个是有评价页，一个是显示无评价。我们在food.vue组件中定义
 
+有评价页比较复杂，我们采用外部相对定位，内部绝对定位方式。内部主要分为两个部分：用户信息部分和评价部分
+
+其中评价部分的第一个是一个icon，可能有两种样式，采用对象的动态绑定方式来实现:class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"
+
+```
+<div class="rating-wrapper">
+  <ul v-show="food.ratings && food.ratings.length">
+    <li v-for="(rating, index) in food.ratings" :key="index" class="rating-item">
+      <div class="user">
+        <div class="name">{{rating.username}}</div>
+        <img class="avatar" width="12" height="12" :src="rating.avatar">
+      </div>
+      <div class="time">{{rating.rateTime}}</div>
+      <p class="text">
+        <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>{{rating.text}}
+      </p>
+    </li>
+  </ul>
+  <div class="no-rating" v-show="!food.ratings || !food.ratings.length"></div>
+</div>
+```
+
+### 8.13 评价列表(2)
+接下来我们写CSS的样式。样式和上面的类似。
 
 

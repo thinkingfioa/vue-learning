@@ -35,6 +35,21 @@
           <h1 class="title">商品评价</h1>
         </div>
         <ratingselect :selectType="selectType" :onlyContent="onlyContent" :desc="desc" :ratings="food.ratings" @ratingtype-select="ratingtypeSelect" @content-toggle="contentToggle"></ratingselect>
+        <div class="rating-wrapper">
+          <ul v-show="food.ratings && food.ratings.length">
+            <li v-for="(rating, index) in food.ratings" :key="index" class="rating-item border-1px" >
+              <div class="user">
+                <div class="name">{{rating.username}}</div>
+                <img class="avatar" width="12" height="12" :src="rating.avatar">
+              </div>
+              <div class="time">{{rating.rateTime}}</div>
+              <p class="text">
+                <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>{{rating.text}}
+              </p>
+            </li>
+          </ul>
+          <div class="no-rating" v-show="!food.ratings || !food.ratings.length"></div>
+        </div>
       </div>
     </div>
   </transition>
@@ -115,6 +130,8 @@ export default {
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "./../../common/styles/mixin.styl"
+
   .food
     position fixed
     z-index 30
@@ -226,4 +243,31 @@ export default {
           margin-left 18px
           font-size 14px
           color rgb(7, 17, 27)
+      .rating-wrapper
+        padding 0 18px
+        .rating-item
+          padding 16px 0
+          border-1px(rgba(7, 17, 27, 0.1))
+          .user
+            position absolute
+            right 0
+            top 16px
+            line-height 12px
+            font-size 0
+            .name
+              display inline-block
+              vertical-align top
+              margin-right 6px
+              font-size 10px
+              color rgb(147, 153, 159)
+            .avatar
+              border-radius 50%
+          .time
+            margin-bottom 6px
+            line-height 12px
+            font-size 10px
+            color rgb(147, 153, 159)
+          .text
+            line-height 16px
+            font-size 12
 </style>
