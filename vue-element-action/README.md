@@ -1550,3 +1550,37 @@ contentToggle (onlyContent) {
 }
 ```
 
+### 8.15 评价列表(4)
+接下来，我们需要处理，当评价为空时，我们需要处理暂无评价的文案。这个文案很简单，
+
+```
+.no-rating
+  padding 16px 0
+  font-size 12px
+  color rgb(147, 153, 159)
+```
+
+#### 8.15.1 显示时间
+在Vue中格式化时间很简单，我们通过filters来实现。Vvue中通过类似于管道'|'的方式，让数据通过管道后的方法来处理。
+
+然后，我们在属性filters中声明formatDate的过滤器。
+
+由于时间的转换是一个非常通用的方法，我们建议定义到一个共用的date.js中，以便后续的人都可以用。
+
+```
+<div class="time">{{rating.rateTime | formatDate}}</div>
+filters: {
+    formatDate (time) {
+      let date = new Date(time)
+      return fomateDate(date, 'yyyy-MM-dd hh:mm')
+    }
+}
+```
+
+#### 8.15.2 将共用的方法抽出，放到date.json中
+
+第一步：在vue文件中，引用formatDate方法。import {formatDate} from '@/common/js/date'。可以引入多个方法，可以使用逗号','分割。
+第二步：在vue中使用该方法。
+
+date.json
+
