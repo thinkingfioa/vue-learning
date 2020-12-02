@@ -37,7 +37,7 @@
         <ratingselect :selectType="selectType" :onlyContent="onlyContent" :desc="desc" :ratings="food.ratings" @ratingtype-select="ratingtypeSelect" @content-toggle="contentToggle"></ratingselect>
         <div class="rating-wrapper">
           <ul v-show="food.ratings && food.ratings.length">
-            <li v-for="(rating, index) in food.ratings" :key="index" class="rating-item border-1px" >
+            <li v-show="needShow(rating.rateType, rating.text)" v-for="(rating, index) in food.ratings" :key="index" class="rating-item border-1px" >
               <div class="user">
                 <div class="name">{{rating.username}}</div>
                 <img class="avatar" width="12" height="12" :src="rating.avatar">
@@ -63,8 +63,6 @@ import cartcontrol from '@/components/cartcontrol/cartcontrol'
 import split from '@/components/split/split'
 import ratingselect from '@/components/ratingselect/ratingselect'
 
-// const POSITIVE = 0
-// const NEGATIVE = 1
 const ALL = 2
 
 export default {
@@ -116,9 +114,25 @@ export default {
     },
     ratingtypeSelect (selectType) {
       this.selectType = selectType
+      this.$nextTick(() => {
+        this.scroll.refresh()
+      })
     },
     contentToggle (onlyContent) {
       this.onlyContent = onlyContent
+      this.$nextTick(() => {
+        this.scroll.refresh()
+      })
+    },
+    needShow (type, text) {
+      if (this.onlyContent && !text) {
+        return false
+      }
+      if (this.selectType === ALL) {
+        return true
+      } else {
+        return type === this.selectType
+      }
     }
   },
   components: {
@@ -269,5 +283,14 @@ export default {
             color rgb(147, 153, 159)
           .text
             line-height 16px
-            font-size 12
+            font-size 12px
+            color rgb(7, 17, 27)
+            .icon-thumb_up, .icon-thumb_down
+              margin-right 4px
+              line-height 16px
+              font-size 12px
+            .icon-thumb_up
+              color rgb(0, 160, 220)
+            .icon-thumb_down
+              color rgb(147, 153, 159)
 </style>

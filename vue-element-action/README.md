@@ -1473,4 +1473,80 @@ ratingtypeSelect (selectType) {
 ### 8.13 评价列表(2)
 接下来我们写CSS的样式。样式和上面的类似。
 
+```
+.rating-wrapper
+    padding 0 18px
+    .rating-item
+      padding 16px 0
+      border-1px(rgba(7, 17, 27, 0.1))
+      .user
+        position absolute
+        right 0
+        top 16px
+        line-height 12px
+        font-size 0
+        .name
+          display inline-block
+          vertical-align top
+          margin-right 6px
+          font-size 10px
+          color rgb(147, 153, 159)
+        .avatar
+          border-radius 50%
+      .time
+        margin-bottom 6px
+        line-height 12px
+        font-size 10px
+        color rgb(147, 153, 159)
+      .text
+        line-height 16px
+        font-size 12px
+        color rgb(7, 17, 27)
+        .icon-thumb_up, .icon-thumb_down
+          margin-right 4px
+          line-height 24px
+          font-size 12px
+        .icon-thumb_up
+          color rgb(0, 160, 220)
+```
+
+### 8.14 评价列表(3)
+点击按钮：全部、推荐和吐槽。联动起下面的评论展示。
+
+在遍历评价列表时，我们需要根据评价的内容和rating.type来控制显示不显示，所以，这里需要用一个v-show来绑定一个表达式，这个表达式控制该列表项是否显示。
+
+```
+<li v-show="needShow(rating.rateType, rating.text)" v-for="(rating, index) in food.ratings" :key="index" class="rating-item border-1px" >
+
+needShow (type, text) {
+  if (this.onlyContent && !text) {
+    return false
+  }
+  if (this.selectType === ALL) {
+    return true
+  } else {
+    return type === this.selectType
+  }
+}
+```
+
+这里有一个要提醒的地方：由于操作子组件ratingselect.vue中的按钮和选择时，发出了事件，在事件的方法中我们修改了this.selectType和this.onlyContent。
+这个两个属性的改变，可能导致我们的betterScroll需要重新计算一次，所以这里我们需要手动调用一下: this.scroll.refresh()
+
+Vue属性的改变，是异步的，我们需要再次使用this.$nextTick()方法异步刷新betterScroll
+
+```
+ratingtypeSelect (selectType) {
+  this.selectType = selectType
+  this.$nextTick(() => {
+    this.scroll.refresh()
+  })
+},
+contentToggle (onlyContent) {
+  this.onlyContent = onlyContent
+  this.$nextTick(() => {
+    this.scroll.refresh()
+  })
+}
+```
 
