@@ -1561,7 +1561,7 @@ contentToggle (onlyContent) {
 ```
 
 #### 8.15.1 显示时间
-在Vue中格式化时间很简单，我们通过filters来实现。Vvue中通过类似于管道'|'的方式，让数据通过管道后的方法来处理。
+在Vue中格式化时间很简单，我们通过filters来实现。Vue中通过类似于管道'|'的方式，让数据通过管道后的方法来处理。
 
 然后，我们在属性filters中声明formatDate的过滤器。
 
@@ -1577,10 +1577,39 @@ filters: {
 }
 ```
 
-#### 8.15.2 将共用的方法抽出，放到date.json中
+#### 8.15.2 将共用的方法抽出，放到date.js中
 
 第一步：在vue文件中，引用formatDate方法。import {formatDate} from '@/common/js/date'。可以引入多个方法，可以使用逗号','分割。
 第二步：在vue中使用该方法。
 
-date.json
+### 8.16/17 评价列表(5/6) 
+编写时间的计算方法。计算方法在date.js中定义并实现。主要思路是使用正则表达式的替换
+
+```
+export function formatDate (date, fmt) {
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+  }
+  let o = {
+    'M+': date.getMonth() + 1,
+    'd+': date.getDate(),
+    'h+': date.getHours(),
+    'm+': date.getMinutes(),
+    's+': date.getSeconds()
+  }
+  for (let k in o) {
+    if (new RegExp(`(${k})`).test(fmt)) {
+      let str = o[k] + ''
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str))
+    }
+  }
+  return fmt
+}
+
+function padLeftZero (str) {
+  return ('00' + str).substr(str.length)
+}
+```
+
+
 
