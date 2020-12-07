@@ -1611,5 +1611,26 @@ function padLeftZero (str) {
 }
 ```
 
+## 第九章 项目实战-评价页
+评价页也是和good.vue组件一样，是一个绝对定位position absolute
 
+### 9.1 rating组件的开发 overview
+overview组件是评价页中的纵览，即：评分和服务态度评星
 
+overview组件有两个部分，左边是综合评分，右边是服务态度的星级。由于手机屏幕的宽度不同，这里我们需要使用flex布局，来自适应宽度的变化
+
+左边是固定长度，所以使用flex 0 0 137px，右边是一个变化的内容，使用flex 1
+
+```
+.overview
+  display flex
+  padding 8px 0
+  .overview-left
+    flex 0 0 137px
+    width 137px
+    border-right 1px solid rgba(7, 17, 27, 0.1)
+    text-align center
+  .overview-right
+    flex 1
+    padding-left 24px
+```
