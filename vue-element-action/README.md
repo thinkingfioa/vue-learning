@@ -1634,3 +1634,38 @@ overview组件有两个部分，左边是综合评分，右边是服务态度的
     flex 1
     padding-left 24px
 ```
+
+### 9.2 rating组件开发 overview开发2
+overview组件中服务态度评星，星级主要是引入之前使用的star.vue组件来讲进行布局。
+
+```
+<div class="overview-right">
+    <div class="score-wrapper">
+      <span class="title">服务态度</span>
+      <star :size="36" :score="seller.serviceScore"></star>
+      <span class="score">{{seller.serviceScore}}</span>
+    </div>
+    <div class="score-wrapper">
+      <span class="title">商品态度</span>
+      <star :size="36" :score="seller.foodScore"></star>
+      <span class="score">{{seller.foodScore}}</span>
+    </div>
+    <div class="delevier-wrapper">
+      <span class="title">送达时间</span>
+      <span class="deliveryTime">{{seller.deliveryTime}}分钟</span>
+    </div>
+</div>
+```
+
+#### 9.2.1 服务态度评星的样式
+其中星级和评分是水平对齐，使用display inline-block属性来控制。其他的都是写常规的CSS格式
+
+```
+display inline-block
+vertical-align top
+```
+
+### 9.3 rating组件开发 overview开发3
+切换到iphone5下会错乱，数据会显示换行，因为：右侧剩余可显示的空间不足，只能换行显示，那我们如何处理呢？
+
+我们需要通过添加
