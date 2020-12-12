@@ -1,5 +1,5 @@
 <template>
-    <div class="ratings">
+    <div class="ratings" ref="ratingWrapper">
       <div class="ratings-content">
         <div class="overview">
           <div class="overview-left">
@@ -24,13 +24,44 @@
             </div>
           </div>
         </div>
+        <split></split>
+        <ratingselect :selectType="selectType" :onlyContent="onlyContent" :ratings="ratings"></ratingselect>
+        <div class="rating-wrapper">
+          <ul>
+            <li v-for="(rating, index) in ratings" :key="index" class="rating-item">
+              <div class="avatar">
+                <img witdh="28" height="28" :src="rating.avatar">
+              </div>
+              <div class="content">
+                <h1 class="name">{{rating.username}}</h1>
+                <div class="star-wrapper"></div>
+                <star :size="24" :score="rating.score"></star>
+                <span class="deliveryTime" v-show="rating.deliveryTime"></span>
+                <p class="text">{{rating.text}}</p>
+                <div class="recommend" v-show="rating.recommend.length">
+                  <span class="icon-thumb_up"></span>
+                  <span v-for="(item, index) in rating.recommend" :key="index" class="item"></span>
+                </div>
+                <div class="time">
+                  {{rating.rateTime | formatDate}}
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-
+import {formatDate} from '@/common/js/date'
+import BScroll from 'better-scroll'
 import star from '@/common/star/star'
+import split from '@/components/split/split'
+import ratingselect from '@/components/ratingselect/ratingselect'
+
+const ALL = 2
+const ERR_OK = 0
 
 export default {
   props: {
@@ -38,8 +69,48 @@ export default {
       type: Object
     }
   },
+  data () {
+    return {
+      ratings: [],
+      showFlag: false,
+      selectType: ALL,
+      onlyContent: true
+    }
+  },
+  created () {
+    this.$http.get('/api/ratings').then((response) => {
+      response = response.body
+      if (response.errno === ERR_OK) {
+        this.ratings = response.data
+        // 初始化better-scroll
+        this.$nextTick(() => {
+          // 为了避免每次添加都创建一个scroll，判断当其不存在是则创建，如果存在，则调用起refresh()方法刷新即可
+          if (!this.scroll) {
+            this.scroll = new BScroll(this.$refs.ratingWrapper, {
+              mouseWheel: true,
+              bounce: false,
+              click: true,
+              tap: true
+            })
+          } else {
+            this.scroll.refresh()
+          }
+        })
+      }
+    }, response => {
+      // error callback
+    })
+  },
+  filters: {
+    formatDate (time) {
+      let date = new Date(time)
+      return formatDate(date, 'yyyy-MM-dd hh:mm')
+    }
+  },
   components: {
-    star
+    star,
+    split,
+    ratingselect
   }
 }
 </script>

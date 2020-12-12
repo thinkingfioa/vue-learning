@@ -1668,4 +1668,72 @@ vertical-align top
 ### 9.3 rating组件开发 overview开发3
 切换到iphone5下会错乱，数据会显示换行，因为：右侧剩余可显示的空间不足，只能换行显示，那我们如何处理呢？
 
-我们需要通过添加
+我们需要通过添加@media来控制
+
+```
+@media only screen and (max-width 320px) {
+  padding-left 6px
+}
+```
+上面的意思是：当屏幕的宽度小于320px时，调整padding-left为6px。这种方法非常适用屏幕大小的兼容性
+
+### 9.4 rating组件开发 评价列表
+评价列表上面的分割栏split.vue和下面的评价ratingselect.vue都是可以复用的。我们按照导入组件的方式，复用下两个组件
+
+split.vue组件很简单，导入即可直接使用。但是ratingselect.vue组件有部分需要传入参数，其中有ratings的参数，我们可以通过调用后端接口获取。通过在created()方法中，调用http请求（也就是vue-resource)，获取后端接口数据
+
+```
+created () {
+    this.$http.get('/api/ratings').then((response) => {
+      response = response.body
+      if (response.errno === ERR_OK) {
+        this.ratings = response.data
+      }
+    }, response => {
+      // error callback
+    })
+}
+```
+
+### 9.4.1 评价列表
+接下来开发评价列表。列表最外面肯定是一个ul结构，其中列表的每一项是一个左右分割的样式，左边是头像，右边是内容。
+
+左边头像部分是不变化的，后边的内容是自适应变化的大小，所以这里也是一个flex布局的结构。
+
+### 9.5 rating组件开发 评价列表2
+rating.vue组件中的列表，按照设计稿一次写布局，其中有一行是时间，时间我们按照food.vue中的开发方式，使用filters属性来利用类似于管道的方式格式化时间字符串。
+
+为了实现页面的滚动，我们引入better-scroll组件，仔细思考我们应该通过http接口获取到参数后，来初始化better-scroll
+
+```
+created () {
+    this.$http.get('/api/ratings').then((response) => {
+      response = response.body
+      if (response.errno === ERR_OK) {
+        this.ratings = response.data
+        // 初始化better-scroll
+        this.$nextTick(() => {
+          // 为了避免每次添加都创建一个scroll，判断当其不存在是则创建，如果存在，则调用起refresh()方法刷新即可
+          if (!this.scroll) {
+            this.scroll = new BScroll(this.$refs.ratingWrapper, {
+              mouseWheel: true,
+              bounce: false,
+              click: true,
+              tap: true
+            })
+          } else {
+            this.scroll.refresh()
+          }
+        })
+      }
+    }, response => {
+      // error callback
+    })
+}
+```
+
+
+
+
+
+
