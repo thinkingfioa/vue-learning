@@ -50,4 +50,5 @@ new Vue({
   render: h => h(App)
 })
 
-router.push('/goods')
+// 移出掉，暂不需要，因为每次刷新就应该在哪个页面，不应该第一次有一个重定向的过程
+// router.push('/goods')

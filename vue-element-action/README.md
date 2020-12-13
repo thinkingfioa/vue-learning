@@ -1715,7 +1715,7 @@ created () {
         this.$nextTick(() => {
           // 为了避免每次添加都创建一个scroll，判断当其不存在是则创建，如果存在，则调用起refresh()方法刷新即可
           if (!this.scroll) {
-            this.scroll = new BScroll(this.$refs.ratingWrapper, {
+            this.scroll = new BScroll(this.$refs.ratings, {
               mouseWheel: true,
               bounce: false,
               click: true,
@@ -1732,7 +1732,46 @@ created () {
 }
 ```
 
+#### 9.5.1 评价列表的样式
+其中有一个非常要提醒的点：由于时间元素是一个绝对定位，所以其父元素content标签中，一定要加上position relative，以实现时间元素可以使用绝对定位.
 
+布局上使用的flex布局，因为左边的头像是固定大小，右边的内容是变化的大小
+
+### 9.6 rating组件开发 评价列表3
+该部分主要是样式的编写，按照规则写即可
+
+```
+.recommend
+    line-height 16px
+    font-size 0
+    .icon-thumb_up, .item
+      display inline-block
+      vertical-align top
+      margin 0 8px 4px 0
+      font-size 9px
+    .icon-thumb_up
+      color rgb(0, 160, 220)
+    .item
+      padding 0 6px
+      border 1px solid rgba(7, 17, 27, 0.1)
+      border-radius 2px
+      color rgb(147, 153, 159)
+      background rgb(255, 255, 255)
+```
+
+#### 9.6.1 时间的绝对定位
+评价页有一个时间，位于每个的右上角，使用绝对定位。 这里要提醒，子组件是采用绝对定位的话，父组件需要是绝对定位，否则定位有问题.
+
+```
+.time
+    position absolute
+    top 0
+    right 0
+    line-height 12px
+    font-size 10px
+    font-weight 200
+    color rgb(147, 153, 159)
+```
 
 
 
