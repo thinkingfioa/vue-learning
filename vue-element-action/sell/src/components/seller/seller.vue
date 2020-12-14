@@ -72,11 +72,14 @@ export default {
           .count
             margin 0 12px 0 8px
         .remark
+          display flex
           .block
+            flex 1
             display inline-block
             vertical-align top
             padding-top 18px
             border-right 1px solidrgba(7, 17, 27, 0.1)
+            text-align center
             .title
               line-height 10px
               font-size 10px
