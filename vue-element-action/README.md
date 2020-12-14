@@ -1773,6 +1773,42 @@ created () {
     color rgb(147, 153, 159)
 ```
 
+### 10.1 seller组件开发overview开发(1)
+overview是位于上面展示部分。布局较为简单，其中我们并排展示：起送价、商家配送和平均配送时间，采用列表ul结构来排列
+
+```
+<div class="overview">
+  <h1 class="title">{{seller.name}}</h1>
+  <div class="desc">
+    <star :size="36" :score="seller.score"></star>
+    <span class="text">({{seller.ratingCount}}})</span>
+    <span class="text">{{seller.sellCount}}</span>
+  </div>
+  <ul class="remark">
+    <li class="block">
+      <h2>起送价</h2>
+      <div class="content">
+        <span class="stress">{{seller.minPrice}}</span>元
+      </div>
+    </li>
+    <li class="block">
+      <h2>商家配送</h2>
+      <div class="content">
+        <span class="stress">{{seller.deliveryPrice}}</span>元
+      </div>
+    </li>
+    <li class="block">
+      <h2>平均配送时间</h2>
+      <div class="content">
+        <span class="stress">{{seller.deliveryTime}}</span>分钟
+      </div>
+    </li>
+  </ul>
+</div>
+```
+
+### 10.2 seller组件开发overview开发(2)
+overview组件的样式。
 
 
 
