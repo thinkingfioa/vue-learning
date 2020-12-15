@@ -1810,5 +1810,9 @@ overview是位于上面展示部分。布局较为简单，其中我们并排展
 ### 10.2 seller组件开发overview开发(2)
 overview组件的样式。
 
+第一：整个页面是一个绝对定位，所以需要添加position absolute，再加上top和left来辅助定位。其他都是些正常写法
+第二：并排的：起送价、商家配送和平均配送时间是通过ul列表标签来排列，很明显这部分是随着屏幕三等分，所以我们又用到了flex 1的布局，来均分三等分。
+第三：三等分过程中，最后一个是没有border-right，采用&:last-child border none来控制 
+
 
 
