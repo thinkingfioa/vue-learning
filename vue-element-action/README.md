@@ -348,6 +348,18 @@ filter blur(10px)
 - data()是方法，通过return返回需要定义的数据，返回的数据是一个json格式的
 - method是this的属性，我们在这个属性定以方法，方法改变data中的数据，达到显示、关闭效果
 
+#### 6.9.4 position中 absolute和fixed区别
+fixed - 固定定位
+absolute - 绝对定位
+
+区别很简单：
+1. 没有滚动条的情况下没有差异
+2. 在fixed定位不会随着滚动条移动而移动，而absolute则会随滚动条移动
+
+常用场合：
+1. fixed常用于网站边缘的公司联系方式和快速回到顶部
+2. absolute常用于页面
+
 ### 6.10 详情弹层页（2）-实现弹出层，使用Sticky footers
 sticky footers用于解决：当页面不够长时，有块区域定在视窗的底部；当页面内容比较长，页脚块会被内容向下推送。[参考](https://www.w3cplus.com/css3/css-secrets/sticky-footers.html)
 如果是flex则会一直在底部
@@ -1813,6 +1825,51 @@ overview组件的样式。
 第一：整个页面是一个绝对定位，所以需要添加position absolute，再加上top和left来辅助定位。其他都是些正常写法
 第二：并排的：起送价、商家配送和平均配送时间是通过ul列表标签来排列，很明显这部分是随着屏幕三等分，所以我们又用到了flex 1的布局，来均分三等分。
 第三：三等分过程中，最后一个是没有border-right，采用&:last-child border none来控制 
+
+### 10.3 公告与活动开发1
+引入split.vue组件
+
+公告活动的布局和界面都是非常普通的，按照常规书写即可。
+
+#### 10.3.1 活动列表页
+活动列表是和header.vue组件中的类似，布局格式都是列表形式
+
+```
+<ul v-if="seller.supports" class="supports">
+  <li class="support-item border-1px" v-for="item in seller.supports" :key="item.index">
+    <span class="icon" :class="classMap[item.type]"></span>
+    <span class="text">{{item.description}}</span>
+  </li>
+</ul>
+```
+
+### 10.4 公告与活动开发2
+接下来写活动列表的样式。活动列标的样式中前面的icon根据:class="classMap[item.type]"而动态变化
+
+```
+.icon
+  display inline-block
+  width 16px
+  height 16px
+  vertical-align top
+  margin-right 6px
+  background-size 16px 16px
+  background-repeat no-repeat
+  &.decrease
+    bg-image('decrease_4')
+  &.discount
+    bg-image('discount_4')
+  &.guarantee
+    bg-image('guarantee_4')
+  &.invoice
+    bg-image('invoice_4')
+  &.special
+    bg-image('special_4')
+```
+
+#### 10.3.2 活动列表页
+引入BetterScroll.vue组件，以往我们都在created()方法中渲染dom，这次我们在mounted()方法中渲染，这样更安全些。
+
 
 
 
