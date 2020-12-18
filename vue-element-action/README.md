@@ -1890,8 +1890,8 @@ mounted () {
 ### 10.5 BScroll引用
 如上面的做法，我们在mounted()中初始化BetterScroll方法，但这个有一个问题，在第一次刷新商家页面的时候，发现无法滚动屏幕，为什么呢？
 
-mounted()方法调用后，变量seller还没被初始化，页面还没有被撑开，所以BetterScroll无法准确计算出页面的高度，也就无法实现滚动。在这里，我们可以通过watch机制来实现，watch变量seller，
-当seller变量发生变化时，初始化或刷新BetterScroll组件
+mounted()方法调用后，变量seller还没被初始化(因为seller变量是由异步传入到内部组件中的)，页面还没有被撑开，所以BetterScroll无法准确计算出页面的高度，也就无法实现滚动。在这里，我们可以通过watch机制来实现，watch变量seller，
+当seller变量发生变化时，初始化或刷新BetterScroll组件.
 
 ```
 watch: {
@@ -1903,6 +1903,54 @@ watch: {
     }
 }
 ```
+
+### 10.6 商家实景图
+商家实景图难度在于，横向排列了多个图片，当多个图片超过屏幕的宽度时，是支持图片横向滑动
+
+在写页面的布局时，我们将图片的地方通过写一个pics-wrapper包装下，这样在写CSS样式时，以实现让这个图片的地方滚动
+
+```
+<div class="pics">
+    <h1 class="title">商家实景</h1>
+    <div class="pic-wrapper">
+      <ul class="pic-list">
+        <li class="pic-item" v-for="(pic, index) in seller.pics" :key="index">
+          <img width="120px" height="90px" :src="pic">
+        </li>
+      </ul>
+    </div>
+</div>
+```
+
+#### 10.6.1 横向排列图片不换行
+我们添加white-space nowrap来实现当图片超过宽度是，不换行
+ 
+```
+.pic-wrapper
+  width 100%
+  overflow hidden
+  white-space nowrap
+  .pic-list
+    font-size 0
+    .pic-item
+      display inline-block
+      vertical-align top
+      margin-right 6px
+      width 120px
+      height 90px
+      &:last-child
+        margin-right 0
+```
+
+#### 10.6.2 图片支持左右滑动
+图片的左右滑动，我们也是通过BetterScroll来实现。我们需要通过一段通过一段JS脚本，将width宽度绑定到组件上。
+
+按照视频中的写法，图片的左右滑动效果并不好，不好操作。
+
+### 10.7 商家实景图
+
+
+
 
 
 

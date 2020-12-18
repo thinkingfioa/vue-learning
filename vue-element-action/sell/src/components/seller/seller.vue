@@ -42,6 +42,26 @@
           </li>
         </ul>
       </div>
+      <split></split>
+      <div class="pics">
+        <h1 class="title">商家实景</h1>
+        <div class="picWrapper" ref="picWrapper">
+          <ul class="picList"  ref="picList">
+            <li class="pic-item" v-for="(pic, index) in seller.pics" :key="index">
+              <img width="120px" height="90px" :src="pic">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <split></split>
+      <div class="info">
+        <h1 class="title border-1px">商家信息</h1>
+        <ul>
+          <li class="info-item border-1px" v-for="(info, index) in seller.infos" :key="index">
+            <p>{{info}}</p>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -63,13 +83,14 @@ export default {
   mounted () {
     this.$nextTick(() => {
       this._initScroll()
+      this._initPics()
     })
   },
   watch: {
     'seller' () {
-      console.log(this.seller)
       this.$nextTick(() => {
         this._initScroll()
+        this._initPics()
       })
     }
   },
@@ -84,6 +105,28 @@ export default {
         })
       } else {
         this.sellerScroll.refresh()
+      }
+    },
+    _initPics () {
+      if (this.seller.pics) {
+        let picWidth = 120
+        let margin = 6
+        let width = (picWidth + margin) * this.seller.pics.length - margin
+        this.$refs.picList.style.width = width + 'px'
+        this.$nextTick(() => {
+          if (!this.picScroll) {
+            this.picScroll = new BScroll(this.$refs.picWrapper, {
+              scrollX: true,
+              eventPassthrough: 'vertical',
+              mouseWheel: true,
+              bounce: false,
+              click: true,
+              tap: true
+            })
+          } else {
+            this.picScroll.refresh()
+          }
+        })
       }
     }
   },
@@ -191,4 +234,40 @@ export default {
               line-height 16px
               font-size 12px
               color rgb(7, 17, 27)
+      .pics
+        padding 18px
+        .title
+          margin-bottom 12px
+          line-height 14px
+          font-size 14px
+          color rgb(7, 17, 27)
+        .picWrapper
+          width 100%
+          overflow hidden
+          white-space nowrap
+          .picList
+            font-size 0
+            .pic-item
+              display inline-block
+              margin-right 6px
+              width 120px
+              height 90px
+              &:last-child
+                margin-right 0
+      .info
+        padding 18px 18px 0 18px
+        color rgb(7, 17, 27)
+        .title
+          padding-bottom 12px
+          line-height 14px
+          font-size 14px
+          color rgb(7, 17, 27)
+          border-1px(rgba(7, 17, 27, 0.1))
+        .info-item
+          padding 16px 12px
+          line-height 16px
+          font-size 12px
+          border-1px(rgba(7, 17, 27, 0.1))
+          &:last-child
+            border none
 </style>
