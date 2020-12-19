@@ -62,6 +62,19 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
+      this._initScroll()
+    })
+  },
+  watch: {
+    'seller' () {
+      console.log(this.seller)
+      this.$nextTick(() => {
+        this._initScroll()
+      })
+    }
+  },
+  methods: {
+    _initScroll () {
       if (!this.sellerScroll) {
         this.sellerScroll = new BScroll(this.$refs.seller, {
           mouseWheel: true,
@@ -72,7 +85,7 @@ export default {
       } else {
         this.sellerScroll.refresh()
       }
-    })
+    }
   },
   components: {
     star,
@@ -154,6 +167,8 @@ export default {
             padding 16px 12px
             font-size 0
             border-1px(rgba(7, 17, 27, 0.1))
+            &:last-child
+              border-none()
             .icon
               display inline-block
               width 16px

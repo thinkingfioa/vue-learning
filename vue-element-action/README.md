@@ -1870,6 +1870,39 @@ overview组件的样式。
 #### 10.3.2 活动列表页
 引入BetterScroll.vue组件，以往我们都在created()方法中渲染dom，这次我们在mounted()方法中渲染，这样更安全些。
 
+```
+mounted () {
+    this.$nextTick(() => {
+      if (!this.sellerScroll) {
+        this.sellerScroll = new BScroll(this.$refs.seller, {
+          mouseWheel: true,
+          bounce: false,
+          click: true,
+          tap: true
+        })
+      } else {
+        this.sellerScroll.refresh()
+      }
+    })
+}
+```
+
+### 10.5 BScroll引用
+如上面的做法，我们在mounted()中初始化BetterScroll方法，但这个有一个问题，在第一次刷新商家页面的时候，发现无法滚动屏幕，为什么呢？
+
+mounted()方法调用后，变量seller还没被初始化，页面还没有被撑开，所以BetterScroll无法准确计算出页面的高度，也就无法实现滚动。在这里，我们可以通过watch机制来实现，watch变量seller，
+当seller变量发生变化时，初始化或刷新BetterScroll组件
+
+```
+watch: {
+    'seller' () {
+      console.log(this.seller)
+      this.$nextTick(() => {
+        this._initScroll()
+      })
+    }
+}
+```
 
 
 
