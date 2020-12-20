@@ -2160,4 +2160,20 @@ Vue提供一个keep-alive来解决该问题，使用了keep-alive会组件的一
 </keep-alive>
 ```
 
+## 第十一章和第十二章
+
+### 11. nodejs调试和webpack配置介绍
+这一章节，主要学习将Vue组件打包。
+
+我们发现在package.json文件中的scripts，有一个build: node build/build.js属性。当我们运行npm run build时，就是执行这个对应的脚本
+
+成功运行完: npm run build时，会生成一个dist目录，这个目录下是项目打包后的结果。
+
+#### 11.1 这些build后的文件怎么产生的呢？
+其实执行的过程就是build.js文件（位于build目录下)，简单的来说：整个build过程就是将我们的源代码打包、压缩、hash到目录：dist/下。具体如何做的，可以参考build目录下的js脚本或视频介绍
+
+#### 11.2 不提供别人调试
+打包过程中，我们可以通过关闭sourceMap: false，来实现打包后的结果没有源代码，这样别人也无法调试
+
+
 
