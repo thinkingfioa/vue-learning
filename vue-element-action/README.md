@@ -1947,10 +1947,217 @@ watch: {
 
 按照视频中的写法，图片的左右滑动效果并不好，不好操作。
 
-### 10.7 商家实景图
+### 10.7 商家信息
+商家信息是非常简单的，页面布局是一个title + 循环展示info
 
+```
+<div class="info">
+    <h1 class="title border-1px">商家信息</h1>
+    <ul>
+      <li class="info-item border-1px" v-for="(info, index) in seller.infos" :key="index">
+        <p>{{info}}</p>
+      </li>
+    </ul>
+</div>
+``` 
 
+### 10.8 收藏商家1
+最有我们开发店铺收藏的逻辑。收藏相对于Overview组件的区块，来决定定位到右上角。
 
+收藏主要由两部分组成：一个是icon='icon-favorite'，另一个是显示的内容。两个分别由两个状态，icon可能是激活状态或未激活状态，内容是'已收藏'和'未收藏'
 
+```
+<div class="favorite">
+  <span class="icon-favorite" :class="{'active':favorite}"></span>
+  <span class="text">{{favoriteText}}}</span>
+</div>
+```
+
+为了刻画出两个状态，"favorite"我们定义一个变量来控制，favoriteText我们定义一个计算属性
+
+```
+data () {
+    return {
+      favorite: false
+    }
+},
+computed: {
+    favoriteText () {
+      return this.favorite ? '已收藏' : '未收藏'
+    }
+}
+```
+
+### 10.8.1 收藏商标的样式
+收藏的商标是绝对定位，所以对于父元素使用position relative，而其子元素使用position absolute来决定定位
+
+```
+.favorite
+  position absolute
+  right 18px
+  top 18px
+  text-align center
+  .icon-favorite
+    display block
+    margin-bottom 4px
+    line-height 24px
+    font-size 24px
+    color #d4d6d9
+    &.active
+      color rgb(240, 20, 20)
+  .text
+    line-height 10px
+    font-size 10px
+    color rgb(77, 85, 93)
+```
+
+### 10.8.2 添加点击等操作
+添加@click="toggleFavorite"方法
+
+```
+toggleFavorite () {
+  this.favorite = !this.favorite
+}
+```
+
+### 10.8.3 调整收藏的位置
+页面样式运行展示时发现，点击收藏后，由于绝对定位的left和right都固定了，所以有变动，我们需要提供这个favorite的宽度，避免随着点击而摆动
+
+```
+.favorite
+  position absolute
+  width 50px
+  right 5px
+  top 18px
+  text-align center
+  .icon-favorite
+    display block
+    margin-bottom 4px
+    line-height 24px
+    font-size 24px
+    color #d4d6d9
+    &.active
+      color rgb(240, 20, 20)
+  .text
+    line-height 10px
+    font-size 10px
+    color rgb(77, 85, 93)
+```
+
+### 10.9 收藏商家2
+我们发现，点击收藏变成"已收藏"，刷新页面后，又会变成"收藏"，我们希望把前端能够保持favorite这个变量的状态，也就是缓存其这个变量，刷新也不会改变。
+
+真是的项目中，每个商家应该都会有一个id作为唯一标识。我们需要在App.vue变量中添加这个id，这个id从哪里来呢？我们需要从url中获取。
+
+第一步：我们定义util.js中方法urlParse()
+
+```
+/**
+ * 解析url参数
+ * @example ?id=3423423&a=b
+ * @return Object {id:3423423, a:b}
+ */
+export function urlParse () {
+  let url = window.location.search
+  let obj = {}
+  let reg = /[?&][^?&]+=[^?&]+/g
+  let arr = url.match(reg)
+  // ['?id=3423423', '&a=b']
+  if (arr) {
+    arr.forEach((item) => {
+      let tempArr = item.substring(1).split('=')
+      let key = decodeURIComponent(tempArr[0])
+      let value = decodeURIComponent(tempArr[1])
+      obj[key] = value
+    })
+  }
+  return obj
+}
+```
+
+第二步：我们在app.vue中使用这个方法获取到obj
+
+```
+data () {
+    return {
+      // 定义数据的属性
+      seller: {
+        id: (() => {
+          let queryParam = urlParse()
+          console.log(queryParam)
+          return queryParam.id
+        })()
+      }
+    }
+}
+```
+
+第三步：将从后端获取到的数据和从url中获取到的id数据进行合并
+我们不能直接使用this.seller = response.data，因为这样会将id数据丢失，我们需要通过合并的方式。
+
+Vue官网推荐我们使用Object.assign方法来进行赋值。
+
+```
+created () {
+    // 使用vue-resource发起前后端请求
+    this.$http.get('/api/seller?id=' + this.seller.id).then(response => {
+      response = response.body
+      if (response.errno === ERR_OK) {
+        this.seller = Object.assign({}, this.seller, response.data)
+      }
+    }, response => {
+      // error callback
+    })
+}
+```
+
+第四步：使用id来缓存favorite变量
+
+### 10.10 收藏商家3
+我们需要在每次点选收藏按钮时，把点选后的结果缓存到前端浏览器中。我们需要设计一个通用的localStorage存储库
+
+新建store.js文件中有两个方法: saveToLocal和loadFromLocal，这两个方法都是通过字符串的形式将所需要的保存的结果存储到localStorage中
+
+```
+export function saveToLocal (id, key, value) {
+  let seller = window.localStorage.__seller__
+  if (!seller) {
+    seller = {}
+    seller[id] = {}
+  } else {
+    seller = JSON.parse(seller)
+    if (!seller[id]) {
+      seller[id] = {}
+    }
+  }
+  seller[id][key] = value
+  window.localStorage.__seller__ = JSON.stringify(seller)
+}
+
+export function loadFromLocal (id, key, def) {
+  let seller = window.localStorage.__seller__
+  if (!seller) {
+    return def
+  }
+  seller = JSON.parse(seller)[id]
+  if (!seller) {
+    return def
+  }
+  return seller[key] || def
+}
+```
+
+方法写好后，我们在seller.vue页面中导入这两个JS方法，并实现保存。主要两个地方使用：第一，调用loalFromLocal()方法初始化favorite；第二，点击保存时，调用saveToLocal
+
+### 10.11 体验优化
+我们发现，点击商品、评价和商家时，原有页面的数据重新被获取，页面也重新被绘画一次，这肯定不是我们希望的。
+
+Vue提供一个keep-alive来解决该问题，使用了keep-alive会组件的一些状态缓存在内存中，这样重新回到商品时，会直接从内存中获取到Dom。这样我们就不会反复调用后端接口
+
+```
+<keep-alive>
+  <router-view :seller="seller"></router-view>
+</keep-alive>
+```
 
 

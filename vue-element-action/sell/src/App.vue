@@ -15,11 +15,14 @@
 
     <!-- 路由出口 -->
     <!-- 路由匹配到的组件将渲染在这里 -->
-    <router-view :seller="seller"></router-view>
+    <keep-alive>
+      <router-view :seller="seller"></router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import {urlParse} from '@/common/js/util'
 import header from '@/components/header/header.vue'
 
 const ERR_OK = 0
@@ -28,16 +31,21 @@ export default {
   data () {
     return {
       // 定义数据的属性
-      seller: {}
+      seller: {
+        id: (() => {
+          let queryParam = urlParse()
+          return queryParam.id
+        })()
+      }
     }
   },
   // create在Vue创建时调用
   created () {
     // 使用vue-resource发起前后端请求
-    this.$http.get('/api/seller').then(response => {
+    this.$http.get('/api/seller?id=' + this.seller.id).then(response => {
       response = response.body
       if (response.errno === ERR_OK) {
-        this.seller = response.data
+        this.seller = Object.assign({}, this.seller, response.data)
       }
     }, response => {
       // error callback
