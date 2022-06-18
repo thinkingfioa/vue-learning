@@ -45,6 +45,7 @@ Vue-cli是Vue的脚手架工具。Vue-cli帮助搞定以下内容:
 - 先安装node.js
 - sudo npm install -g vue-cli
 - 使用vue命令创建外卖项目: vue init webpack sell
+- 进入sell目录文件夹下
 - 安装依赖：cnpm install。运行完后，会生成node_modules文件夹
 - dev环境下运行: cnpm run dev
 - 打包：cnpm run build
